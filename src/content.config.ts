@@ -18,6 +18,8 @@ const gigs = defineCollection({
 		// Pounds. 0 means free.
 		price: optional(z.number()),
 		ticketUrl: optional(z.url()),
+		// Shown on the ticket button instead of where the tickets are sold.
+		soldOut: optional(z.boolean()),
 		// The artist's profile on each service
 		links: z
 			.object({

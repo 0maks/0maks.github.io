@@ -99,11 +99,20 @@ const filters = [
 													)}
 													<ListenLinks spotify={g.links.spotify} tidal={g.links.tidal} name={g.artist} />
 												</div>
-												{g.ticketUrl && (
+												{(g.ticketUrl || g.soldOut) && (
 													<div class="actions">
-														<a class="btn primary" href={g.ticketUrl} rel="noopener">
-															{ticketLabel(g.ticketUrl)} <span aria-hidden="true">↗</span>
-														</a>
+														{g.ticketUrl ? (
+															<a
+																class:list={['btn', g.soldOut ? 'soldout' : 'primary']}
+																href={g.ticketUrl}
+																rel="noopener"
+																aria-label={g.soldOut ? `Sold out, view on ${ticketLabel(g.ticketUrl)}` : undefined}
+															>
+																{g.soldOut ? 'Sold out' : ticketLabel(g.ticketUrl)} <span aria-hidden="true">↗</span>
+															</a>
+														) : (
+															<span class="btn soldout">Sold out</span>
+														)}
 													</div>
 												)}
 											</li>

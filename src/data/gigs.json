@@ -31,8 +31,9 @@
 		"date": "2026-10-07",
 		"venue": "Electric Ballroom",
 		"postcode": "NW1",
-		"tags": ["art-punk", "indie", "sold out"],
+		"tags": ["art-punk", "indie"],
 		"ticketUrl": "https://dice.fm/event/mx359r-manwomanchainsaw-7th-oct-electric-ballroom-london-tickets",
+		"soldOut": true,
 		"links": {
 			"spotify": "https://open.spotify.com/artist/0KheksMhWogVV4frHAihPJ",
 			"tidal": "https://tidal.com/artist/34180261"
@@ -45,8 +46,9 @@
 		"date": "2026-11-06",
 		"venue": "Rough Trade East",
 		"postcode": "E1",
-		"tags": ["post-punk", "sold out"],
+		"tags": ["post-punk"],
 		"ticketUrl": "https://dice.fm/event/dkoq5g-do-nothing-live-signing-6th-nov-rough-trade-east-london-london-tickets",
+		"soldOut": true,
 		"links": {
 			"spotify": "https://open.spotify.com/artist/73N7cGNNww6Uod1d3IiBKP",
 			"tidal": "https://tidal.com/artist/9467988"
@@ -143,8 +145,9 @@
 		"date": "2026-12-02",
 		"venue": "HERE at Outernet",
 		"postcode": "WC2H",
-		"tags": ["electronic", "experimental", "sold out"],
+		"tags": ["electronic", "experimental"],
 		"ticketUrl": null,
+		"soldOut": true,
 		"links": {
 			"spotify": "https://open.spotify.com/artist/1iX0eIvL5iHnaDny7BBtWH",
 			"tidal": "https://tidal.com/artist/3905628"
