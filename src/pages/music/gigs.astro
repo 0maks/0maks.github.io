@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import SubNav from '../../components/SubNav.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import GigMeta from '../../components/GigMeta.astro';
+import ListenLinks from '../../components/ListenLinks.astro';
 import {
 	upcomingGigs,
 	groupByMonth,
@@ -50,6 +51,7 @@ const months = groupByMonth(gigs);
 															{g.tags.map((t) => <span class="badge">{t}</span>)}
 														</p>
 													)}
+													<ListenLinks spotify={g.links.spotify} tidal={g.links.tidal} name={g.artist} />
 												</div>
 												{g.ticketUrl && (
 													<div class="actions">

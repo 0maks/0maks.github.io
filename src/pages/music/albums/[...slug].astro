@@ -3,6 +3,7 @@ import { getImage } from 'astro:assets';
 import Base from '../../../layouts/Base.astro';
 import SubNav from '../../../components/SubNav.astro';
 import Cover from '../../../components/Cover.astro';
+import ListenLinks from '../../../components/ListenLinks.astro';
 import { getAlbums, albumUrl, coverOf, formatWeek } from '../../../lib/albums';
 
 export async function getStaticPaths() {
@@ -18,11 +19,6 @@ const { title, artist, weekOf, year, tags, highlights, links, blurb } = album.da
 const paragraphs = (blurb ?? '').split(/\n\s*\n/).filter(Boolean);
 const cover = coverOf(album);
 const preview = cover ? (await getImage({ src: cover, width: 1200, height: 1200 })).src : undefined;
-const linkList = [
-	['Bandcamp', links.bandcamp],
-	['Spotify', links.spotify],
-	['Apple Music', links.appleMusic],
-].filter(([, href]) => href) as [string, string][];
 ---
 
 <Base title={`${title} · ${artist}`} description={`${title} by ${artist}, album of the week.`} image={preview}>
@@ -45,13 +41,7 @@ const linkList = [
 					</>
 				)
 			}
-			{
-				linkList.length > 0 && (
-					<p class="links mono">
-						{linkList.map(([label, href]) => <a href={href} rel="noopener">{label} <span aria-hidden="true">↗</span></a>)}
-					</p>
-				)
-			}
+			<ListenLinks {...links} name={title} />
 		</div>
 	</article>
 
@@ -73,9 +63,6 @@ const linkList = [
 	.tracks-label { margin: 1.5rem 0 0.5rem; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 	.tracks { margin: 0; padding-left: 1.1rem; }
 	.tracks li { margin: 0.15rem 0; }
-	.links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin: 1.25rem 0 0; }
-	.links a { text-decoration: none; border-bottom: 1px solid var(--line); }
-	.links a:hover { color: var(--accent); border-color: var(--accent); }
 	.pager { display: flex; justify-content: space-between; gap: 1rem; margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); }
 	.pager a { text-decoration: none; }
 	.pager a:hover { color: var(--accent); }

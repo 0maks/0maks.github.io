@@ -15,6 +15,13 @@ const gigs = defineCollection({
 		// Pounds. 0 means free.
 		price: z.number().optional(),
 		ticketUrl: z.url().optional(),
+		// The artist's profile on each service
+		links: z
+			.object({
+				spotify: z.url().optional(),
+				tidal: z.url().optional(),
+			})
+			.default({}),
 		note: z.string().optional(),
 		tags: z.array(z.string()).default([]),
 	}),
@@ -42,6 +49,7 @@ const albums = defineCollection({
 			.object({
 				bandcamp: z.url().optional(),
 				spotify: z.url().optional(),
+				tidal: z.url().optional(),
 				appleMusic: z.url().optional(),
 			})
 			.default({}),

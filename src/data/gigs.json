@@ -19,6 +19,10 @@
 		"postcode": "E1",
 		"tags": ["dance punk"],
 		"ticketUrl": "https://link.dice.fm/9hXZX41WV6b\\",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/4DLjEphXbW7qIhX4iwmNEe",
+			"tidal": "https://tidal.com/artist/41434166"
+		},
 		"price": 17.81
 	},
 	{
@@ -29,6 +33,10 @@
 		"postcode": "EC2A",
 		"tags": ["cloud rap"],
 		"ticketUrl": "https://dice.fm/event/53mvry-thaiboy-digital-7th-nov-village-underground-london-tickets",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/3cGojc1Yu89IHXx8OeSnee",
+			"tidal": "https://tidal.com/artist/6268154"
+		},
 		"price": 30.52
 	},
 	{
@@ -39,6 +47,10 @@
 		"postcode": "N16",
 		"tags": ["shoegaze"],
 		"ticketUrl": "https://www.ticketmaster.co.uk/feeble-little-horse-london-22-11-2026/event/35006527BA9F23AD",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/2GJa7lPCjAB1rKXptXrfy8",
+			"tidal": "https://tidal.com/artist/24516191"
+		},
 		"price": 26
 	},
 	{
@@ -49,6 +61,10 @@
 		"postcode": "NW5",
 		"tags": ["jazz punk"],
 		"ticketUrl": "https://www.ticketmaster.co.uk/event/3E006478C38944F0",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/1qDKbZJLaLlsaI7e6mHqm3",
+			"tidal": "https://tidal.com/artist/10803660"
+		},
 		"price": 24.7
 	},
 	{
@@ -59,6 +75,9 @@
 		"postcode": "NW1",
 		"tags": ["indie"],
 		"ticketUrl": "https://electricballroom.co.uk/no-cigar/",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/3XQd5pdqTHayJ1nUL3yqjT"
+		},
 		"price": 20
 	},
 	{
@@ -69,6 +88,10 @@
 		"postcode": "NW1",
 		"tags": ["punk"],
 		"ticketUrl": "https://dice.fm/event/nvx7w3-lambrini-girls-19th-mar-roundhouse-london-tickets",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/6VR4TJ20WGiho2xZWMuuWb",
+			"tidal": "https://tidal.com/artist/22274325"
+		},
 		"price": 28
 	}
 ]

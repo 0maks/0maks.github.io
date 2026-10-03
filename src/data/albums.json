@@ -9,7 +9,10 @@
 		"colour": "#e1251b",
 		"tags": [
 			"dance punk"
-		]
+		],
+		"links": {
+			"tidal": "https://tidal.com/album/529039114"
+		}
 	},
 	{
 		"id": "2026-09-21-deftones-white-pony",
@@ -21,6 +24,9 @@
 		"colour": "#d9cfba",
 		"tags": [
 			"alt metal"
-		]
+		],
+		"links": {
+			"spotify": "https://open.spotify.com/album/5LEXck3kfixFaA3CqVE7bC"
+		}
 	}
 ]
