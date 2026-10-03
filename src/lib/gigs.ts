@@ -9,8 +9,8 @@ export const formatDate = (d: Date, opts: Intl.DateTimeFormatOptions) =>
 export const londonDay = (d: Date) =>
 	new Intl.DateTimeFormat('en-CA', { timeZone: LONDON, year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
 
-export const formatPrice = (p?: number) =>
-	p === undefined ? '' : p === 0 ? 'Free' : `£${p.toFixed(2).replace(/\.00$/, '')}`;
+/** Whole pounds, rounded up (so £20.02 shows as £21). The exact price stays in the data. */
+export const formatPrice = (p?: number) => (p === undefined ? '' : p === 0 ? 'Free' : `£${Math.ceil(Number(p.toFixed(2)))}`);
 
 /** Upcoming gigs, soonest first. Past gigs drop off at build time. */
 export async function upcomingGigs() {
