@@ -3,7 +3,7 @@ import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 const gigs = defineCollection({
-	loader: file('src/data/gigs.yaml'),
+	loader: file('src/data/gigs.json'),
 	schema: z.object({
 		artist: z.string(),
 		date: z.coerce.date(),

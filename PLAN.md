@@ -187,7 +187,7 @@ Received:
 1. GitHub username `0maks`. Repo `0maks/0maks.github.io`, served from the root.
 2. Flickr user `189507686@N05`. Favourites album `72177720335971884`. Both are in `src/site.config.ts`.
 3. Site name "Max Exposure".
-4. Eight gigs, seeded in `src/data/gigs.yaml`. Venue and ticket link are still missing for each.
+4. Eight gigs, seeded in `src/data/gigs.json`. Venue and ticket link are still missing for each.
 5. No About page. It was removed, and the home page has no intro text.
 
 Still needed:
