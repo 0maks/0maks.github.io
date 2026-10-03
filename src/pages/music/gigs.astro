@@ -15,6 +15,26 @@ import {
 
 const gigs = await upcomingGigs();
 const months = groupByMonth(gigs);
+
+/** Distinct values with how many gigs have each, A to Z. */
+function tally(values: (string | undefined)[]) {
+	const counts = new Map<string, number>();
+	for (const v of values) if (v) counts.set(v, (counts.get(v) ?? 0) + 1);
+	return [...counts].map(([value, count]) => ({ value, label: value, count })).sort((a, b) => a.value.localeCompare(b.value));
+}
+
+// One dropdown per filter. A filter is only offered when it would actually narrow the list.
+const filters = [
+	{
+		name: 'month',
+		title: 'Month',
+		all: 'All months',
+		options: months.map((m) => ({ value: m.key, label: m.label, count: m.gigs.length })),
+	},
+	{ name: 'genre', title: 'Genre', all: 'All genres', options: tally(gigs.flatMap((g) => g.data.tags)) },
+	{ name: 'area', title: 'Area', all: 'All areas', options: tally(gigs.map((g) => g.data.postcode)) },
+	{ name: 'venue', title: 'Venue', all: 'All venues', options: tally(gigs.map((g) => g.data.venue)) },
+].filter((f) => f.options.length > 1);
 ---
 
 <Base title="Gigs" description="London gigs I want to go to, with links to tickets.">
@@ -26,10 +46,29 @@ const months = groupByMonth(gigs);
 			<p>Nothing lined up right now.</p>
 		) : (
 			<>
+				<div class="filters" data-filters role="search" aria-label="Filter gigs" hidden>
+					<input type="search" placeholder="Search artist or venue" aria-label="Search gigs" autocomplete="off" />
+					{filters.map((f) => (
+						<label class="select">
+							<span class="sr-only">{f.title}</span>
+							<select data-filter={f.name}>
+								<option value="">{f.all}</option>
+								{f.options.map((o) => (
+									<option value={o.value}>
+										{o.label} ({o.count})
+									</option>
+								))}
+							</select>
+						</label>
+					))}
+					<button type="button" class="clear" data-clear hidden>Clear</button>
+					<p class="count mono" data-count aria-live="polite">{gigs.length} {gigs.length === 1 ? 'gig' : 'gigs'}</p>
+				</div>
+
 				<div class="months">
 					{
 						months.map((m, i) => (
-							<section class="month">
+							<section class="month" data-month-section>
 								<div class:list={{ first: i === 0 }}>
 									<SectionHead label={m.label} />
 								</div>
@@ -37,7 +76,14 @@ const months = groupByMonth(gigs);
 									{m.gigs.map(({ data: g }) => {
 										const soon = soonLabel(g.date);
 										return (
-											<li class="gig">
+											<li
+												class="gig"
+												data-month={m.key}
+												data-genre={g.tags.join('|')}
+												data-area={g.postcode ?? ''}
+												data-venue={g.venue ?? ''}
+												data-search={[g.artist, g.venue, ...g.tags].filter(Boolean).join(' ').toLowerCase()}
+											>
 												<time class="when" datetime={londonDay(g.date)}>
 													<span class="wd mono">{formatDate(g.date, { weekday: 'short' })}</span>
 													<span class="dd">{formatDate(g.date, { day: 'numeric' })}</span>
@@ -60,7 +106,7 @@ const months = groupByMonth(gigs);
 														</a>
 													</div>
 												)}
-										</li>
+											</li>
 										);
 									})}
 								</ul>
@@ -68,13 +114,157 @@ const months = groupByMonth(gigs);
 						))
 					}
 				</div>
+				<p class="none" data-none hidden>No gigs match those filters.</p>
 			</>
 		)
 	}
 </Base>
 
+<script>
+	const bar = document.querySelector<HTMLElement>('[data-filters]');
+	if (bar) {
+		const search = bar.querySelector<HTMLInputElement>('input[type="search"]')!;
+		const selects = [...bar.querySelectorAll<HTMLSelectElement>('select[data-filter]')];
+		const clear = bar.querySelector<HTMLButtonElement>('[data-clear]')!;
+		const count = bar.querySelector<HTMLElement>('[data-count]')!;
+		const gigs = [...document.querySelectorAll<HTMLElement>('.gig')];
+		const months = [...document.querySelectorAll<HTMLElement>('[data-month-section]')];
+		const none = document.querySelector<HTMLElement>('[data-none]')!;
+		const total = gigs.length;
+
+		const matches = (g: HTMLElement, name: string, value: string) =>
+			name === 'genre' ? g.dataset.genre!.split('|').includes(value) : g.dataset[name] === value;
+
+		const apply = () => {
+			const q = search.value.trim().toLowerCase();
+			let shown = 0;
+			for (const g of gigs) {
+				const ok = (!q || g.dataset.search!.includes(q)) && selects.every((s) => !s.value || matches(g, s.dataset.filter!, s.value));
+				g.hidden = !ok;
+				if (ok) shown++;
+			}
+			months.forEach((m) => (m.hidden = !m.querySelector('.gig:not([hidden])')));
+			none.hidden = shown > 0;
+			count.textContent = `${shown === total ? '' : `${shown} of `}${total} ${total === 1 ? 'gig' : 'gigs'}`;
+
+			selects.forEach((s) => s.classList.toggle('on', s.value !== ''));
+			clear.hidden = !q && selects.every((s) => !s.value);
+
+			// Keep the address in step so a filtered view can be shared.
+			const params = new URLSearchParams();
+			if (q) params.set('q', search.value.trim());
+			selects.forEach((s) => s.value && params.set(s.dataset.filter!, s.value));
+			history.replaceState(null, '', params.size ? `?${params}` : location.pathname);
+		};
+
+		// Restore a shared link like /music/gigs/?genre=punk&area=NW1
+		const params = new URLSearchParams(location.search);
+		search.value = params.get('q') ?? '';
+		for (const s of selects) {
+			const wanted = params.get(s.dataset.filter!);
+			if (wanted && [...s.options].some((o) => o.value === wanted)) s.value = wanted;
+		}
+
+		search.addEventListener('input', apply);
+		selects.forEach((s) => s.addEventListener('change', apply));
+		clear.addEventListener('click', () => {
+			search.value = '';
+			selects.forEach((s) => (s.value = ''));
+			apply();
+			search.focus();
+		});
+
+		bar.hidden = false; // filters need JS, so only show them when it runs
+		apply();
+	}
+</script>
+
 <style>
 	.first :global(.section-head) { margin-top: 0; }
+
+	.filters {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem;
+		max-width: 52rem;
+		margin-bottom: 2rem;
+	}
+	.filters[hidden] { display: none; }
+	input[type='search'] {
+		flex: 1 1 100%;
+		min-height: 2.25rem;
+		padding: 0 0.9rem;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--fg);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+		-webkit-appearance: none;
+		appearance: none;
+	}
+	input[type='search']::placeholder { color: var(--muted); }
+	input[type='search']:hover { border-color: var(--fg); }
+	input[type='search']:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+	.select { position: relative; flex: 1 1 calc(50% - 0.5rem); }
+	.select::after {
+		content: '';
+		position: absolute;
+		right: 0.95rem;
+		top: 50%;
+		width: 0.4rem;
+		height: 0.4rem;
+		border-right: 1.5px solid var(--muted);
+		border-bottom: 1.5px solid var(--muted);
+		transform: translateY(-70%) rotate(45deg);
+		pointer-events: none;
+	}
+	select {
+		width: 100%;
+		min-height: 2.25rem;
+		padding: 0 2.1rem 0 0.9rem;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--muted);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+		cursor: pointer;
+		text-overflow: ellipsis;
+		-webkit-appearance: none;
+		appearance: none;
+	}
+	select:hover { color: var(--fg); border-color: var(--fg); }
+	select.on { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+	.select:has(select.on)::after { border-color: var(--bg); }
+	option { background: var(--bg); color: var(--fg); }
+
+	.clear {
+		min-height: 2.25rem;
+		padding: 0 0.5rem;
+		border: 0;
+		background: none;
+		color: var(--accent);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		text-decoration: underline;
+		text-underline-offset: 0.25em;
+		cursor: pointer;
+	}
+	.clear[hidden] { display: none; }
+	.count { margin: 0 0 0 auto; color: var(--muted); }
+	.none { color: var(--muted); }
+
+	@media (min-width: 40rem) {
+		input[type='search'] { flex: 1 1 14rem; }
+		.select { flex: 0 1 auto; }
+		select { width: auto; max-width: 14rem; }
+	}
+
 	.months { max-width: 52rem; }
 	.gigs { list-style: none; margin: 0; padding: 0; }
 	.gig {
@@ -84,6 +274,7 @@ const months = groupByMonth(gigs);
 		padding: 1.1rem 0;
 		border-bottom: 1px solid var(--line);
 	}
+	.gig[hidden] { display: none; }
 	.gig:last-child { border-bottom: 0; }
 	.when { display: flex; flex-direction: column; align-items: center; line-height: 1; padding-top: 0.2rem; }
 	.wd { color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.7rem; }
