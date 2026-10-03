@@ -41,6 +41,20 @@
 		"price": 23
 	},
 	{
+		"id": "camille-jansen-sharkpit-2026-10-26",
+		"artist": "Camille Jansen + Sharkpit",
+		"date": "2026-10-26",
+		"venue": "The Grace",
+		"postcode": "N5",
+		"tags": ["indie folk"],
+		"ticketUrl": "https://dice.fm/event/xeodx3-camille-jansen-a-slice-of-life-tour-26th-oct-the-grace-london-tickets",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/3fPap8kKuNMRn5PR06x0gN",
+			"tidal": "https://tidal.com/artist/9187998"
+		},
+		"price": 20.02
+	},
+	{
 		"id": "do-nothing-2026-11-06",
 		"artist": "Do Nothing",
 		"date": "2026-11-06",
