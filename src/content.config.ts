@@ -2,27 +2,30 @@ import { defineCollection } from 'astro:content';
 import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+// Imported data often writes `null` for "none". Treat that the same as leaving the field out.
+const optional = <T extends z.ZodType>(schema: T) => schema.nullish().transform((v) => v ?? undefined);
+
 const gigs = defineCollection({
 	loader: file('src/data/gigs.json'),
 	schema: z.object({
 		artist: z.string(),
 		date: z.coerce.date(),
-		venue: z.string().optional(),
+		venue: optional(z.string()),
 		// First half of the postcode only, e.g. "NW1"
-		postcode: z.string().optional(),
+		postcode: optional(z.string()),
 		// Doors or start time, e.g. "19:30".
-		time: z.string().regex(/^\d{2}:\d{2}$/).optional(),
+		time: optional(z.string().regex(/^\d{2}:\d{2}$/)),
 		// Pounds. 0 means free.
-		price: z.number().optional(),
-		ticketUrl: z.url().optional(),
+		price: optional(z.number()),
+		ticketUrl: optional(z.url()),
 		// The artist's profile on each service
 		links: z
 			.object({
-				spotify: z.url().optional(),
-				tidal: z.url().optional(),
+				spotify: optional(z.url()),
+				tidal: optional(z.url()),
 			})
 			.default({}),
-		note: z.string().optional(),
+		note: optional(z.string()),
 		tags: z.array(z.string()).default([]),
 	}),
 });

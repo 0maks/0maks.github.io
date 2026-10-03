@@ -26,6 +26,34 @@
 		"price": 17.81
 	},
 	{
+		"id": "man-woman-chainsaw-2026-10-07",
+		"artist": "Man/Woman/Chainsaw",
+		"date": "2026-10-07",
+		"venue": "Electric Ballroom",
+		"postcode": "NW1",
+		"tags": ["art-punk", "indie", "sold out"],
+		"ticketUrl": "https://dice.fm/event/mx359r-manwomanchainsaw-7th-oct-electric-ballroom-london-tickets",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/0KheksMhWogVV4frHAihPJ",
+			"tidal": "https://tidal.com/artist/34180261"
+		},
+		"price": 23
+	},
+	{
+		"id": "do-nothing-2026-11-06",
+		"artist": "Do Nothing",
+		"date": "2026-11-06",
+		"venue": "Rough Trade East",
+		"postcode": "E1",
+		"tags": ["post-punk", "sold out"],
+		"ticketUrl": "https://dice.fm/event/dkoq5g-do-nothing-live-signing-6th-nov-rough-trade-east-london-london-tickets",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/73N7cGNNww6Uod1d3IiBKP",
+			"tidal": "https://tidal.com/artist/9467988"
+		},
+		"price": 18
+	},
+	{
 		"id": "thaiboy-digital-2026-11-07",
 		"artist": "Thaiboy Digital",
 		"date": "2026-11-07",
@@ -38,6 +66,20 @@
 			"tidal": "https://tidal.com/artist/6268154"
 		},
 		"price": 30.52
+	},
+	{
+		"id": "grandmas-house-2026-11-17",
+		"artist": "Grandmas House",
+		"date": "2026-11-17",
+		"venue": "Oslo Hackney",
+		"postcode": "E8",
+		"tags": ["punk", "post-punk"],
+		"ticketUrl": null,
+		"links": {
+			"spotify": "https://open.spotify.com/artist/6BFppN7DZ1DR7zFyNTj7Nv",
+			"tidal": "https://tidal.com/artist/18094612"
+		},
+		"price": 18
 	},
 	{
 		"id": "feeble-little-horse-2026-11-22",
@@ -80,6 +122,48 @@
 			"tidal": "https://tidal.com/artist/22115831"
 		},
 		"price": 20
+	},
+	{
+		"id": "yard-act-2026-11-26",
+		"artist": "Yard Act",
+		"date": "2026-11-26",
+		"venue": "O2 Academy Brixton",
+		"postcode": "SW9",
+		"tags": ["post-punk", "indie rock"],
+		"ticketUrl": "https://www.livenation.co.uk/event/yard-act-london-ticket-edp1661700",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/2h3ooJn8m8X8cL2g1BZ1Rd",
+			"tidal": "https://tidal.com/artist/18395031"
+		},
+		"price": 36
+	},
+	{
+		"id": "headache-2026-12-02",
+		"artist": "Headache",
+		"date": "2026-12-02",
+		"venue": "HERE at Outernet",
+		"postcode": "WC2H",
+		"tags": ["electronic", "experimental", "sold out"],
+		"ticketUrl": null,
+		"links": {
+			"spotify": "https://open.spotify.com/artist/1iX0eIvL5iHnaDny7BBtWH",
+			"tidal": "https://tidal.com/artist/3905628"
+		},
+		"price": 31
+	},
+	{
+		"id": "getdown-services-2026-12-08",
+		"artist": "Getdown Services",
+		"date": "2026-12-08",
+		"venue": "Roundhouse",
+		"postcode": "NW1",
+		"tags": ["dance-punk"],
+		"ticketUrl": "https://www.roundhouse.org.uk/whats-on/getdown-services/",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/4OTD2AbOu5iBqSWk3NfwG5",
+			"tidal": "https://tidal.com/artist/22866295"
+		},
+		"price": 25
 	},
 	{
 		"id": "lambrini-girls-2027-03-19",
