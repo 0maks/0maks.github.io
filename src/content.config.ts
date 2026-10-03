@@ -21,28 +21,33 @@ const gigs = defineCollection({
 });
 
 const albums = defineCollection({
-	loader: glob({ pattern: '*.md', base: 'src/content/albums' }),
-	schema: ({ image }) =>
-		z.object({
-			title: z.string(),
-			artist: z.string(),
-			// Monday of the week this was album of the week
-			weekOf: z.coerce.date(),
-			year: z.number().int().optional(),
-			cover: image().optional(),
-			// Hex colour used for the heatmap and the fallback cover. Defaults to the site accent.
-			colour: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
-			tags: z.array(z.string()).default([]),
-			// Standout tracks, shown like added lines in a diff
-			highlights: z.array(z.string()).default([]),
-			links: z
-				.object({
-					bandcamp: z.url().optional(),
-					spotify: z.url().optional(),
-					appleMusic: z.url().optional(),
-				})
-				.default({}),
-		}),
+	loader: file('src/data/albums.json'),
+	schema: z.object({
+		title: z.string(),
+		artist: z.string(),
+		// Monday of the week this was album of the week, e.g. "2026-09-28"
+		weekOf: z.coerce.date(),
+		year: z.number().int().optional(),
+		// Link to the cover image. It is fetched and resized at build time.
+		cover: z.url().optional(),
+		// Hex colour for the placeholder cover shown when there is no image. Defaults to the site accent.
+		colour: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		tags: z.array(z.string()).default([]),
+		// Standout tracks
+		highlights: z.array(z.string()).default([]),
+		links: z
+			.object({
+				bandcamp: z.url().optional(),
+				spotify: z.url().optional(),
+				appleMusic: z.url().optional(),
+			})
+			.default({}),
+		// A few words on why. Separate paragraphs with a blank line ("\n\n").
+		blurb: z.string().optional(),
+	}),
 });
 
 const blog = defineCollection({

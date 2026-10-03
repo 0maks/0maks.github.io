@@ -1,0 +1,26 @@
+[
+	{
+		"id": "2026-09-28-fat-dog-cancel-me-im-tired",
+		"title": "Cancel Me (I'm Tired)",
+		"artist": "Fat Dog",
+		"weekOf": "2026-09-28",
+		"year": 2026,
+		"cover": "https://i.scdn.co/image/ab67616d0000b273e611c4e324d24ab832801826",
+		"colour": "#e1251b",
+		"tags": [
+			"dance punk"
+		]
+	},
+	{
+		"id": "2026-09-21-deftones-white-pony",
+		"title": "White Pony",
+		"artist": "Deftones",
+		"weekOf": "2026-09-21",
+		"year": 2000,
+		"cover": "https://m.media-amazon.com/images/I/51BXwSNRwIL._UF894,1000_QL80_.jpg",
+		"colour": "#d9cfba",
+		"tags": [
+			"alt metal"
+		]
+	}
+]

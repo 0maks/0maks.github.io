@@ -1,10 +1,9 @@
 ---
-import { render } from 'astro:content';
 import { getImage } from 'astro:assets';
 import Base from '../../../layouts/Base.astro';
 import SubNav from '../../../components/SubNav.astro';
 import Cover from '../../../components/Cover.astro';
-import { getAlbums, albumUrl, formatWeek } from '../../../lib/albums';
+import { getAlbums, albumUrl, coverOf, formatWeek } from '../../../lib/albums';
 
 export async function getStaticPaths() {
 	const albums = await getAlbums();
@@ -15,9 +14,10 @@ export async function getStaticPaths() {
 }
 
 const { album, newer, older } = Astro.props;
-const { title, artist, weekOf, year, tags, highlights, links } = album.data;
-const { Content } = await render(album);
-const preview = album.data.cover ? (await getImage({ src: album.data.cover, width: 1200, height: 1200 })).src : undefined;
+const { title, artist, weekOf, year, tags, highlights, links, blurb } = album.data;
+const paragraphs = (blurb ?? '').split(/\n\s*\n/).filter(Boolean);
+const cover = coverOf(album);
+const preview = cover ? (await getImage({ src: cover, width: 1200, height: 1200 })).src : undefined;
 const linkList = [
 	['Bandcamp', links.bandcamp],
 	['Spotify', links.spotify],
@@ -36,7 +36,7 @@ const linkList = [
 			<h1>{title}</h1>
 			<p class="artist">{artist}{year && <span class="year"> · {year}</span>}</p>
 			{tags.length > 0 && <p class="tags">{tags.map((t) => <span class="badge">{t}</span>)}</p>}
-			<div class="prose"><Content /></div>
+			{paragraphs.length > 0 && <div class="prose">{paragraphs.map((p) => <p>{p}</p>)}</div>}
 			{
 				highlights.length > 0 && (
 					<>

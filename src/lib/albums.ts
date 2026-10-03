@@ -2,6 +2,14 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Album = CollectionEntry<'albums'>;
 
+// Written by scripts/check-covers.mjs before each build: cover URLs that could not be fetched.
+const broken = new Set<string>(
+	Object.values(import.meta.glob<string[]>('../data/broken-covers.json', { eager: true, import: 'default' })).flat(),
+);
+
+/** The album's cover URL, unless it is missing or known to be dead. */
+export const coverOf = (a: Album) => (a.data.cover && !broken.has(a.data.cover) ? a.data.cover : undefined);
+
 const DAY = 86_400_000;
 
 /** All albums, newest week first. */

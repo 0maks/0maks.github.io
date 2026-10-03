@@ -7,6 +7,8 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
 	site: 'https://0maks.github.io',
 	integrations: [sitemap()],
+	// Album covers are linked by URL; Astro downloads and resizes them at build time.
+	image: { remotePatterns: [{ protocol: 'https' }] },
 	markdown: {
 		// Code blocks follow the visitor's light/dark setting (see .astro-code in global.css).
 		shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' } },

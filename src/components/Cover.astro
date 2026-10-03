@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { initials, textOn, type Album } from '../lib/albums';
+import { coverOf, initials, textOn, type Album } from '../lib/albums';
 
 interface Props {
 	album: Album;
@@ -10,7 +10,8 @@ interface Props {
 }
 
 const { album, size = 600, eager = false } = Astro.props;
-const { cover, colour, title, artist } = album.data;
+const { colour, title, artist } = album.data;
+const cover = coverOf(album);
 const bg = colour ?? '#e1251b';
 ---
 
