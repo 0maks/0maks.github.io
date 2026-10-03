@@ -76,7 +76,8 @@
 		"tags": ["indie"],
 		"ticketUrl": "https://electricballroom.co.uk/no-cigar/",
 		"links": {
-			"spotify": "https://open.spotify.com/artist/3XQd5pdqTHayJ1nUL3yqjT"
+			"spotify": "https://open.spotify.com/artist/3XQd5pdqTHayJ1nUL3yqjT",
+			"tidal": "https://tidal.com/artist/22115831"
 		},
 		"price": 20
 	},
