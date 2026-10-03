@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+import { getImage } from 'astro:assets';
 import Base from '../../../layouts/Base.astro';
 import SubNav from '../../../components/SubNav.astro';
 import Cover from '../../../components/Cover.astro';
@@ -16,6 +17,7 @@ export async function getStaticPaths() {
 const { album, newer, older } = Astro.props;
 const { title, artist, weekOf, year, tags, highlights, links } = album.data;
 const { Content } = await render(album);
+const preview = album.data.cover ? (await getImage({ src: album.data.cover, width: 1200, height: 1200 })).src : undefined;
 const linkList = [
 	['Bandcamp', links.bandcamp],
 	['Spotify', links.spotify],
@@ -23,7 +25,7 @@ const linkList = [
 ].filter(([, href]) => href) as [string, string][];
 ---
 
-<Base title={`${title} · ${artist}`} description={`${title} by ${artist}, album of the week.`}>
+<Base title={`${title} · ${artist}`} description={`${title} by ${artist}, album of the week.`} image={preview}>
 	<SubNav />
 	<article class="album">
 		<div class="art"><Cover album={album} size={1000} eager /></div>

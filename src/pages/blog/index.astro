@@ -6,7 +6,7 @@ import { getPosts } from '../../lib/blog';
 const posts = await getPosts();
 ---
 
-<Base title="Blog">
+<Base title="Blog" description="Design patterns I find interesting.">
 	<h1 class="sr-only">Blog</h1>
 	{posts.length > 0 ? <PostList posts={posts} /> : <p>Coming soon.</p>}
 </Base>

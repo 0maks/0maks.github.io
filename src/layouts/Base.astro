@@ -6,11 +6,17 @@ interface Props {
 	title?: string;
 	description?: string;
 	noindex?: boolean;
+	/** Social preview image. Defaults to the site card. */
+	image?: string | URL;
+	/** Open Graph type: "article" for blog posts. */
+	type?: 'website' | 'article';
 }
 
-const { title, description = site.tagline, noindex = false } = Astro.props;
+const { title, description = site.tagline, noindex = false, image = '/og.png', type = 'website' } = Astro.props;
 const pageTitle = title ? `${title} · ${site.name}` : site.name;
 const path = Astro.url.pathname;
+const canonical = new URL(path, Astro.site);
+const imageUrl = new URL(image, Astro.site);
 ---
 
 <!doctype html>
@@ -21,6 +27,16 @@ const path = Astro.url.pathname;
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		{noindex && <meta name="robots" content="noindex" />}
+		<link rel="canonical" href={canonical} />
+		<meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#101010" media="(prefers-color-scheme: dark)" />
+		<meta property="og:site_name" content={site.name} />
+		<meta property="og:type" content={type} />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={imageUrl} />
+		<meta name="twitter:card" content="summary_large_image" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		{site.blog.published && <link rel="alternate" type="application/rss+xml" title={`${site.name} blog`} href="/blog/rss.xml" />}

@@ -7,7 +7,7 @@ import { getAlbums } from '../../lib/albums';
 const albums = await getAlbums();
 ---
 
-<Base title="Music">
+<Base title="Music" description="Albums of the week, and London gigs worth going to.">
 	<h1 class="sr-only">Music</h1>
 	<SubNav />
 	{albums.length > 0 ? <AlbumGrid albums={albums} /> : <p>No albums yet.</p>}
