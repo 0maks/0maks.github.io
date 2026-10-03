@@ -1,0 +1,53 @@
+---
+import { Image } from 'astro:assets';
+import { initials, textOn, type Album } from '../lib/albums';
+
+interface Props {
+	album: Album;
+	/** Rendered pixel width of the image. Use ~2x the displayed size. */
+	size?: number;
+	eager?: boolean;
+}
+
+const { album, size = 600, eager = false } = Astro.props;
+const { cover, colour, title, artist } = album.data;
+const bg = colour ?? '#e1251b';
+---
+
+{
+	cover ? (
+		<Image
+			class="cover-img"
+			src={cover}
+			alt={`${title} by ${artist}`}
+			width={size}
+			height={size}
+			loading={eager ? 'eager' : 'lazy'}
+			decoding="async"
+		/>
+	) : (
+		<div class="cover-gen" style={`--bg:${bg};--fg:${textOn(bg)}`} role="img" aria-label={`${title} by ${artist}`}>
+			<span class="ini" aria-hidden="true">{initials(artist)}</span>
+			<span class="ttl" aria-hidden="true">{title}</span>
+		</div>
+	)
+}
+
+<style>
+	.cover-img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: var(--radius); background: var(--line); }
+	.cover-gen {
+		aspect-ratio: 1;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		padding: 8%;
+		border-radius: var(--radius);
+		background: var(--bg);
+		color: var(--fg);
+		container-type: inline-size;
+		overflow: hidden;
+	}
+	.ini { font-family: var(--font-display); font-weight: 800; font-size: 38cqw; line-height: 0.85; letter-spacing: -0.06em; }
+	.ttl { font-family: var(--font-mono); font-size: max(7px, 7cqw); line-height: 1.25; text-transform: uppercase; letter-spacing: 0.04em; }
+</style>

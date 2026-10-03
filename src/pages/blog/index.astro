@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts } from '../../lib/blog';
+
+const posts = await getPosts();
+---
+
+<Base title="Blog">
+	<h1 class="sr-only">Blog</h1>
+	{posts.length > 0 ? <PostList posts={posts} /> : <p>Coming soon.</p>}
+</Base>

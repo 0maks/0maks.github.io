@@ -1,0 +1,28 @@
+---
+const path = Astro.url.pathname;
+const items = [
+	{ href: '/music/', label: 'Albums', active: !path.startsWith('/music/gigs') },
+	{ href: '/music/gigs/', label: 'Gigs', active: path.startsWith('/music/gigs') },
+];
+---
+
+<nav class="subnav" aria-label="Music">
+	{items.map((i) => <a href={i.href} aria-current={i.active ? 'page' : undefined}>{i.label}</a>)}
+</nav>
+
+<style>
+	.subnav { display: flex; gap: 0.5rem; margin: 1.5rem 0 2rem; }
+	a {
+		font-family: var(--font-mono);
+		font-size: 0.8rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		text-decoration: none;
+		padding: 0.5rem 1rem;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		color: var(--muted);
+	}
+	a:hover { color: var(--fg); border-color: var(--fg); }
+	a[aria-current='page'] { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+</style>

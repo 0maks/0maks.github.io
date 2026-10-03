@@ -1,0 +1,188 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Page not found" description="This page could not be found." noindex>
+	<section class="lost">
+		<!-- falling coffee beans, behind the content -->
+		<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+			<symbol id="bean" viewBox="0 0 20 28">
+				<ellipse cx="10" cy="14" rx="8" ry="12" fill="var(--coffee)" />
+				<path d="M10 3c-5 6 5 16 0 22" fill="none" stroke="var(--bean-line)" stroke-width="2" stroke-linecap="round" />
+			</symbol>
+		</svg>
+		<div class="beans" aria-hidden="true">
+			<svg class="bean" style="--x:5%;--s:20px;--t:11s;--d:-2s;--r:300deg"><use href="#bean" /></svg>
+			<svg class="bean" style="--x:15%;--s:28px;--t:14s;--d:-9s;--r:-240deg"><use href="#bean" /></svg>
+			<svg class="bean" style="--x:26%;--s:16px;--t:10s;--d:-5s;--r:200deg"><use href="#bean" /></svg>
+			<svg class="bean" style="--x:72%;--s:18px;--t:12s;--d:-7s;--r:-320deg"><use href="#bean" /></svg>
+			<svg class="bean" style="--x:84%;--s:26px;--t:15s;--d:-1s;--r:260deg"><use href="#bean" /></svg>
+			<svg class="bean" style="--x:94%;--s:20px;--t:11s;--d:-10s;--r:-200deg"><use href="#bean" /></svg>
+		</div>
+
+		<h1 class="code" aria-label="404">
+			<span aria-hidden="true">4</span>
+			<svg class="cup" viewBox="0 0 120 130" role="img" aria-label="A steaming cup of coffee" focusable="false">
+				<defs>
+					<clipPath id="surface"><ellipse cx="59" cy="54" rx="37" ry="6" /></clipPath>
+				</defs>
+				<!-- steam: wisps that travel up the path while swaying -->
+				<g class="steam" fill="none" stroke="currentColor" stroke-linecap="round">
+					<path class="w w1" pathLength="100" d="M40 40C30 30 50 22 40 10S50-8 40-22" stroke-width="4" />
+					<path class="w w2" pathLength="100" d="M59 40C49 30 69 22 59 10S69-8 59-22" stroke-width="5" />
+					<path class="w w3" pathLength="100" d="M78 40C68 30 88 22 78 10S88-8 78-22" stroke-width="4" />
+					<path class="w w4" pathLength="100" d="M49 38C41 30 57 24 49 14S57 0 49-10" stroke-width="3" />
+					<path class="w w5" pathLength="100" d="M69 38C61 30 77 24 69 14S77 0 69-10" stroke-width="3" />
+				</g>
+				<!-- saucer -->
+				<ellipse class="saucer" cx="58" cy="118" rx="50" ry="8" fill="none" stroke="currentColor" stroke-width="5" />
+				<g class="vessel">
+					<!-- handle -->
+					<path d="M96 62h6a13 13 0 0 1 0 28h-9" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+					<!-- cup -->
+					<path d="M18 50h82v26a32 32 0 0 1-32 32H50a32 32 0 0 1-32-32z" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="round" />
+					<!-- coffee with a slowly stirred swirl of cream -->
+					<ellipse cx="59" cy="54" rx="37" ry="6" fill="var(--coffee)" />
+					<g clip-path="url(#surface)">
+						<g transform="translate(59 54) scale(1 0.16)">
+							<g class="swirl">
+								<path d="M3.0 0.0 L3.3 0.6 L3.4 1.3 L3.4 2.1 L3.3 2.9 L2.9 3.7 L2.3 4.5 L1.6 5.2 L0.7 5.7 L-0.4 6.1 L-1.6 6.3 L-2.8 6.2 L-4.1 5.9 L-5.3 5.3 L-6.5 4.4 L-7.5 3.3 L-8.3 2.0 L-8.8 0.5 L-9.1 -1.2 L-9.1 -2.9 L-8.7 -4.6 L-8.0 -6.4 L-7.0 -8.0 L-5.6 -9.4 L-3.9 -10.6 L-2.0 -11.4 L0.1 -12.0 L2.3 -12.1 L4.6 -11.8 L6.8 -11.1 L8.9 -9.9 L10.8 -8.3 L12.5 -6.4 L13.8 -4.2 L14.6 -1.6 L15.0 1.1 L14.9 3.8 L14.3 6.6 L13.1 9.3 L11.5 11.7 L9.4 13.9 L6.9 15.7 L4.0 17.0 L0.9 17.8 L-2.4 18.0 L-5.7 17.6 L-9.0 16.6 L-12.0 15.0 L-14.8 12.8 L-17.1 10.1 L-19.0 6.9 L-20.3 3.4 L-20.9 -0.3 L-20.9 -4.1 L-20.1 -8.0 L-18.6 -11.6 L-16.5 -15.0 L-13.7 -18.0 L-10.4 -20.5 L-6.6 -22.4 L-2.5 -23.5 L1.8 -23.9 L6.2 -23.5 L10.5 -22.3 L14.6 -20.4 L18.3 -17.6 L21.4 -14.2 L24.0 -10.3 L25.8 -5.9 L26.7 -1.1 L26.8 3.8 L26.1 8.7 L24.4 13.4 L21.8 17.8 L18.5 21.7 L14.4 25.0 L9.8 27.5 L4.7 29.1 L-0.6 29.9 L-6.1 29.6 L-11.4 28.3 L-16.6 26.1 L-21.2 22.9 L-25.3 18.9 L-28.6 14.2 L-31.0 8.9 L-32.5 3.2 L-32.9 -2.8 L-32.1 -8.7 L-30.4 -14.5 L-27.5 -20.0" fill="none" stroke="var(--cream)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" />
+							</g>
+						</g>
+					</g>
+				</g>
+			</svg>
+			<span aria-hidden="true">4</span>
+		</h1>
+
+		<p class="line" data-line>This page went cold.</p>
+		<p class="mono sub">Nothing's brewing at this address.</p>
+
+		<p class="actions">
+			<a class="btn primary" href="/">Back to the home page</a>
+			<button type="button" class="btn" data-another hidden>Another one <span aria-hidden="true">↻</span></button>
+		</p>
+	</section>
+</Base>
+
+<script>
+	const lines = [
+		'This page went cold.',
+		'We ran out of beans for this URL.',
+		'This link was decaf: no kick, no content.',
+		'Over-extracted. We ground this page too fine and it vanished.',
+		'Espresso yourself somewhere else. Nothing here.',
+		'This page left before the milk was steamed.',
+		'Bean there, searched that. No page.',
+	];
+	const line = document.querySelector<HTMLElement>('[data-line]')!;
+	const button = document.querySelector<HTMLButtonElement>('[data-another]')!;
+	let current = 0;
+
+	const next = () => {
+		// Never repeat the line that is already showing.
+		let i = current;
+		while (i === current) i = Math.floor(Math.random() * lines.length);
+		current = i;
+		line.textContent = lines[i];
+	};
+
+	button.hidden = false; // needs JS, so only show it when it runs
+	button.addEventListener('click', next);
+</script>
+
+<style>
+	.lost {
+		--coffee: #6f4e37;
+		--cream: #ead7ba;
+		--bean-line: var(--bg);
+		position: relative;
+		overflow: hidden;
+		padding: 2rem 0 3rem;
+		text-align: center;
+	}
+	.lost > :not(.beans):not(svg) { position: relative; }
+
+	.code {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.02em;
+		margin: 0 0 1.5rem;
+		font-size: clamp(6rem, 30vw, 13rem);
+		font-weight: 800;
+		line-height: 0.85;
+		letter-spacing: -0.06em;
+	}
+	.cup { height: 0.78em; width: auto; flex: none; color: var(--accent); overflow: visible; cursor: default; }
+	.line { margin: 0 auto 0.35rem; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.4rem, 4.5vw, 2.1rem); letter-spacing: -0.02em; line-height: 1.15; max-width: 28ch; }
+	.sub { margin: 0 0 2rem; color: var(--muted); }
+	.actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin: 0; }
+
+	/* Still version: wisps and swirl simply sit there. */
+	.w { opacity: 0.75; }
+	.beans { display: none; }
+
+	@media (prefers-reduced-motion: no-preference) {
+		/* Steam: a short segment of each wisp travels up its curve, swaying and fading. */
+		.w {
+			opacity: 0;
+			stroke-dasharray: 42 100;
+			stroke-dashoffset: 42;
+			animation: flow 3.6s linear infinite, sway 2.4s ease-in-out infinite alternate;
+		}
+		.w2 { animation-duration: 4.2s, 2.9s; animation-delay: -1.4s, -0.6s; }
+		.w3 { animation-duration: 3.4s, 2.2s; animation-delay: -2.4s, -1.2s; }
+		.w4 { animation-duration: 3s, 2s; animation-delay: -0.8s, -1.7s; }
+		.w5 { animation-duration: 3.8s, 2.6s; animation-delay: -2.9s, -0.3s; }
+		@keyframes flow {
+			0% { stroke-dashoffset: 42; opacity: 0; }
+			15% { opacity: 0.9; }
+			80% { opacity: 0.7; }
+			100% { stroke-dashoffset: -100; opacity: 0; }
+		}
+		@keyframes sway {
+			from { transform: translateX(-3px); }
+			to { transform: translateX(3px); }
+		}
+
+		/* Cream swirl being stirred. */
+		.swirl { animation: stir 9s linear infinite; }
+		@keyframes stir { to { transform: rotate(360deg); } }
+
+		/* The cup bobs gently, and the saucer shadow breathes with it. */
+		.vessel { animation: bob 4s ease-in-out infinite; }
+		@keyframes bob {
+			0%, 100% { transform: translateY(0); }
+			50% { transform: translateY(-2.5px); }
+		}
+
+		/* Hover or focus: more steam, a happy wiggle, a faster stir. */
+		.cup:hover .w { animation-duration: 1.8s, 1.2s; }
+		.cup:hover .swirl { animation-duration: 2.5s; }
+		.cup:hover .vessel { animation: wiggle 0.6s ease-in-out infinite; }
+		@keyframes wiggle {
+			0%, 100% { transform: rotate(0); }
+			25% { transform: rotate(-3deg); }
+			75% { transform: rotate(3deg); }
+		}
+
+		/* Coffee beans drifting down behind everything. */
+		.beans { display: block; position: absolute; inset: 0; pointer-events: none; }
+		.bean {
+			position: absolute;
+			top: -40px;
+			left: var(--x);
+			width: var(--s);
+			height: calc(var(--s) * 1.4);
+			opacity: 0;
+			animation: fall var(--t) linear var(--d) infinite;
+		}
+		@keyframes fall {
+			0% { transform: translateY(0) rotate(0); opacity: 0; }
+			12% { opacity: 0.5; }
+			88% { opacity: 0.5; }
+			100% { transform: translateY(420px) rotate(var(--r)); opacity: 0; }
+		}
+	}
+</style>

@@ -1,0 +1,94 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import GigMeta from '../components/GigMeta.astro';
+import Cover from '../components/Cover.astro';
+import { site } from '../site.config';
+import { getAlbums, albumUrl, formatWeek } from '../lib/albums';
+import { upcomingGigs, formatDate, londonDay } from '../lib/gigs';
+import { favourites, pickSize } from '../lib/photos';
+
+const [nextGig] = await upcomingGigs();
+const [latest] = await getAlbums();
+---
+
+<Base>
+	<h1 class="sr-only">{site.name}</h1>
+
+	<div class="first">
+		<SectionHead label="Album of the week" href="/music/" />
+	</div>
+	{
+		latest ? (
+			<article class="album">
+				<a class="cover" href={albumUrl(latest)} tabindex="-1" aria-hidden="true">
+					<Cover album={latest} size={720} eager />
+				</a>
+				<div>
+					<p class="mono muted">Week of {formatWeek(latest.data.weekOf, { day: 'numeric', month: 'short' })}</p>
+					<h3><a href={albumUrl(latest)}>{latest.data.title}</a></h3>
+					<p class="artist">{latest.data.artist}</p>
+				</div>
+			</article>
+		) : (
+			<p class="muted">No album yet.</p>
+		)
+	}
+
+	{
+		nextGig && (
+			<>
+				<SectionHead label="Next gig" href="/music/gigs/" />
+				<article class="gig">
+					<time class="mono muted" datetime={londonDay(nextGig.data.date)}>
+						{formatDate(nextGig.data.date, { weekday: 'long', day: 'numeric', month: 'long' })}
+					</time>
+					<h3>{nextGig.data.artist}</h3>
+					<GigMeta venue={nextGig.data.venue} postcode={nextGig.data.postcode} time={nextGig.data.time} price={nextGig.data.price} />
+				</article>
+			</>
+		)
+	}
+
+	{
+		favourites.length > 0 && (
+			<>
+				<SectionHead label="Favourite photos" href="/photos/" />
+				<div class="favs">
+					{favourites.map((p) => {
+						const img = pickSize(p, 640);
+						return (
+							<a class="tile" href="/photos/" tabindex="-1" aria-hidden="true">
+								<img src={img.src} width={img.w} height={img.h} alt="" loading="lazy" decoding="async" />
+							</a>
+						);
+					})}
+				</div>
+			</>
+		)
+	}
+</Base>
+
+<style>
+	.first :global(.section-head) { margin-top: 0; }
+	.muted { color: var(--muted); }
+
+	.album { display: grid; gap: 1.25rem; grid-template-columns: 1fr; }
+	.cover { display: block; max-width: 22rem; width: 100%; text-decoration: none; }
+	.album h3 { font-size: clamp(1.6rem, 5vw, 2.4rem); }
+	.album h3 a { text-decoration: none; }
+	.album h3 a:hover { color: var(--accent); }
+	.artist { font-size: 1.1rem; color: var(--muted); }
+	@media (min-width: 40rem) {
+		.album { grid-template-columns: minmax(12rem, 20rem) 1fr; gap: 2rem; align-items: start; }
+	}
+
+	.gig { display: grid; gap: 0.35rem; justify-items: start; }
+	.gig h3 { font-size: clamp(1.6rem, 5vw, 2.4rem); }
+
+	.favs { display: grid; gap: 6px; grid-template-columns: repeat(2, 1fr); }
+	.tile { display: block; overflow: hidden; border-radius: var(--radius); background: color-mix(in srgb, var(--fg) 8%, var(--bg)); }
+	.tile img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; transition: opacity 0.15s; }
+	.tile:hover img { opacity: 0.88; }
+	@media (min-width: 40rem) { .favs { grid-template-columns: repeat(3, 1fr); } }
+</style>

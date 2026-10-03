@@ -1,0 +1,54 @@
+---
+import '../styles/global.css';
+import { site } from '../site.config';
+
+interface Props {
+	title?: string;
+	description?: string;
+	noindex?: boolean;
+}
+
+const { title, description = site.tagline, noindex = false } = Astro.props;
+const pageTitle = title ? `${title} · ${site.name}` : site.name;
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en-GB">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		{noindex && <meta name="robots" content="noindex" />}
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		{site.blog.published && <link rel="alternate" type="application/rss+xml" title={`${site.name} blog`} href="/blog/rss.xml" />}
+		<title>{pageTitle}</title>
+	</head>
+	<body>
+		<header class="site-header">
+			<div class="wrap">
+				<a class="wordmark" href="/">Max <span>Exposure</span></a>
+				<nav class="site-nav" aria-label="Main">
+					{
+						site.nav.map((item) => (
+							<a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>
+								{item.label}
+							</a>
+						))
+					}
+				</nav>
+			</div>
+		</header>
+		<main class="wrap">
+			<slot />
+		</main>
+		<footer class="site-footer">
+			<div class="wrap mono">
+				<span>© {new Date().getFullYear()} Max Exposure</span>
+				<span>London</span>
+			</div>
+		</footer>
+	</body>
+</html>

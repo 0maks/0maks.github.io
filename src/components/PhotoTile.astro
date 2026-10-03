@@ -1,0 +1,49 @@
+---
+import { pickSize, monthKey, takenLabel, type Photo } from '../lib/photos';
+
+interface Props {
+	photo: Photo;
+	/** Photos in the same gallery open together in the lightbox. */
+	gallery: string;
+	/** Crop to a fixed 3:2 frame instead of keeping the photo's own shape. */
+	crop?: boolean;
+	sizes?: string;
+}
+
+const { photo, gallery, crop = false, sizes = '(min-width: 70rem) 372px, (min-width: 48rem) 33vw, 50vw' } = Astro.props;
+const mid = pickSize(photo, 640);
+const largest = photo.sizes.at(-1)!;
+const title = photo.title || 'Untitled';
+---
+
+<a
+	class:list={['ph', { crop }]}
+	href={photo.url}
+	rel="noopener"
+	data-gallery={gallery}
+	data-full={largest.src}
+	data-title={photo.title}
+	data-date={takenLabel(photo)}
+	data-month={monthKey(photo)}
+	data-tags={photo.tags.join('|')}
+>
+	<img
+		src={mid.src}
+		srcset={photo.sizes.map((s) => `${s.src} ${s.w}w`).join(', ')}
+		sizes={sizes}
+		width={mid.w}
+		height={mid.h}
+		alt={title}
+		loading="lazy"
+		decoding="async"
+	/>
+</a>
+
+<style>
+	.ph { display: block; overflow: hidden; border-radius: var(--radius); background: color-mix(in srgb, var(--fg) 8%, var(--bg)); }
+	img { display: block; width: 100%; height: auto; transition: opacity 0.15s; }
+	.crop img { aspect-ratio: 3 / 2; object-fit: cover; }
+	.ph:hover img { opacity: 0.88; }
+	.ph:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+	@media (prefers-reduced-motion: reduce) { img { transition: none; } }
+</style>

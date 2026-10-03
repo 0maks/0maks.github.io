@@ -1,0 +1,47 @@
+---
+import { formatPrice } from '../lib/gigs';
+
+interface Props {
+	venue?: string;
+	postcode?: string;
+	time?: string;
+	price?: number;
+}
+
+const { venue, postcode, time, price } = Astro.props;
+const place = [venue, postcode].filter(Boolean).join(' · ');
+const mapUrl = venue
+	? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue}, London ${postcode ?? ''}`.trim())}`
+	: undefined;
+const rest = [time, formatPrice(price)].filter(Boolean).join(' · ');
+---
+
+{
+	(place || rest) && (
+		<p class="meta mono">
+			{mapUrl && (
+				<a href={mapUrl} target="_blank" rel="noopener" aria-label={`${venue} on Google Maps`}>
+					{place}
+				</a>
+			)}
+			{mapUrl && rest && ' · '}
+			{rest}
+		</p>
+	)
+}
+
+<style>
+	.meta { margin: 0.3rem 0 0; color: var(--muted); }
+	a { color: inherit; text-decoration: none; border-radius: 2px; }
+	/* Plain text until you point at it, then a highlighter-style mark. */
+	a:hover, a:focus-visible {
+		color: var(--fg);
+		background: color-mix(in srgb, var(--accent) 25%, transparent);
+		box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
+	}
+	a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+	/* No hover on touch screens, so hint that it is tappable. */
+	@media (hover: none) {
+		a { text-decoration: underline dotted; text-underline-offset: 0.25em; }
+	}
+</style>

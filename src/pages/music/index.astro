@@ -1,0 +1,14 @@
+---
+import Base from '../../layouts/Base.astro';
+import SubNav from '../../components/SubNav.astro';
+import AlbumGrid from '../../components/AlbumGrid.astro';
+import { getAlbums } from '../../lib/albums';
+
+const albums = await getAlbums();
+---
+
+<Base title="Music">
+	<h1 class="sr-only">Music</h1>
+	<SubNav />
+	{albums.length > 0 ? <AlbumGrid albums={albums} /> : <p>No albums yet.</p>}
+</Base>

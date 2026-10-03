@@ -1,0 +1,40 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getPosts, postUrl, tagUrl, formatPostDate } from '../../lib/blog';
+
+export async function getStaticPaths() {
+	const posts = await getPosts();
+	return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { title, date, summary, tags } = post.data;
+const { Content } = await render(post);
+---
+
+<Base title={title} description={summary}>
+	<article class="post">
+		<header>
+			<p class="mono meta">
+				<time datetime={date.toISOString().slice(0, 10)}>{formatPostDate(date)}</time>
+			</p>
+			<h1>{title}</h1>
+			{tags.length > 0 && <p class="tags">{tags.map((t) => <a class="badge" href={tagUrl(t)}>{t}</a>)}</p>}
+		</header>
+		<div class="prose"><Content /></div>
+	</article>
+	<p class="back mono"><a href="/blog/">← All posts</a></p>
+</Base>
+
+<style>
+	.post { max-width: 42rem; }
+	.meta { color: var(--muted); margin: 0 0 0.75rem; }
+	h1 { font-size: clamp(2rem, 7vw, 3.25rem); }
+	.tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0 0 2rem; }
+	.badge { text-decoration: none; }
+	.badge:hover { color: var(--accent); border-color: var(--accent); }
+	.back { margin-top: 3rem; }
+	.back a { text-decoration: none; }
+	.back a:hover { color: var(--accent); }
+</style>

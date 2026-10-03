@@ -1,0 +1,92 @@
+---
+import Cover from './Cover.astro';
+import { monthColumns, albumUrl, formatWeek, type Album } from '../lib/albums';
+
+interface Props {
+	albums: Album[];
+}
+
+// Newest first: latest month at the top, latest week at its top-left.
+const months = monthColumns(Astro.props.albums)
+	.reverse()
+	.map((m) => ({ ...m, weeks: [...m.weeks].reverse() }));
+---
+
+<div class="months">
+	{
+		months.map((col, i) => (
+			<section class="month" aria-label={`${col.label} ${col.year}`}>
+				<h2 class="mono">
+					{col.label}
+					{(i === 0 || col.label === 'Jan') && <span>{col.year}</span>}
+				</h2>
+				<ul>
+					{col.weeks.map((w) =>
+						w.album ? (
+							<li>
+								<a
+									class="tile"
+									href={albumUrl(w.album)}
+									aria-label={`${w.album.data.title} by ${w.album.data.artist}, week of ${formatWeek(w.monday)}`}
+								>
+									<Cover album={w.album} size={240} />
+									<span class="cap" aria-hidden="true">
+										<strong>{w.album.data.title}</strong>
+										{w.album.data.artist}
+									</span>
+								</a>
+							</li>
+						) : (
+							<li class="empty" aria-hidden="true" title={`Week of ${formatWeek(w.monday)}`} />
+						)
+					)}
+				</ul>
+			</section>
+		))
+	}
+</div>
+
+<style>
+	.months { display: grid; gap: 2rem; max-width: 52rem; }
+	h2 {
+		margin: 0 0 0.6rem;
+		font-size: 0.8rem;
+		font-weight: 500;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+	h2 span { color: var(--muted); margin-left: 0.4rem; }
+	ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+	li { aspect-ratio: 1; }
+	.empty { border-radius: var(--radius); background: color-mix(in srgb, var(--fg) 6%, var(--bg)); }
+	.tile { position: relative; display: block; text-decoration: none; width: 100%; height: 100%; border-radius: var(--radius); overflow: hidden; }
+	.tile :global(img), .tile :global(.cover-gen) { width: 100%; height: 100%; }
+
+	/* Wider screens: a month is one row of up to five weeks, label on the left. */
+	@media (min-width: 40rem) {
+		.month { display: grid; grid-template-columns: 5.5rem 1fr; gap: 0 1rem; align-items: start; }
+		h2 { margin: 0.25rem 0 0; display: flex; flex-direction: column; gap: 0.1rem; }
+		h2 span { margin-left: 0; }
+		ul { grid-template-columns: repeat(5, 1fr); }
+	}
+
+	.cap {
+		position: absolute;
+		inset: auto 0 0 0;
+		display: flex;
+		flex-direction: column;
+		padding: 1.6rem 0.4rem 0.4rem;
+		background: linear-gradient(transparent, rgb(0 0 0 / 0.85));
+		color: #fff;
+		font-size: 0.65rem;
+		line-height: 1.25;
+		opacity: 0;
+		transition: opacity 0.15s;
+		overflow: hidden;
+	}
+	.cap strong { font-size: 0.72rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+	.tile:hover .cap, .tile:focus-visible .cap { opacity: 1; }
+	.tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+	@media (hover: none) { .cap { display: none; } }
+	@media (prefers-reduced-motion: reduce) { .cap { transition: none; } }
+</style>

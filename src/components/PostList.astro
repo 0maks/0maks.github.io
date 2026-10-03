@@ -1,0 +1,42 @@
+---
+import { postUrl, tagUrl, formatPostDate, type Post } from '../lib/blog';
+
+interface Props {
+	posts: Post[];
+}
+const { posts } = Astro.props;
+---
+
+<ul class="posts">
+	{
+		posts.map((p) => (
+			<li>
+				<time class="mono date" datetime={p.data.date.toISOString().slice(0, 10)}>{formatPostDate(p.data.date)}</time>
+				<div>
+					<h2><a href={postUrl(p)}>{p.data.title}</a></h2>
+					<p class="summary">{p.data.summary}</p>
+					{
+						p.data.tags.length > 0 && (
+							<p class="tags">{p.data.tags.map((t) => <a class="badge" href={tagUrl(t)}>{t}</a>)}</p>
+						)
+					}
+				</div>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.posts { list-style: none; margin: 0; padding: 0; max-width: 46rem; }
+	li { display: grid; gap: 0.25rem 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
+	li:last-child { border-bottom: 0; }
+	.date { color: var(--muted); }
+	h2 { margin: 0; font-size: 1.5rem; }
+	h2 a { text-decoration: none; }
+	h2 a:hover { color: var(--accent); }
+	.summary { margin: 0.35rem 0 0; color: var(--muted); }
+	.tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.6rem 0 0; }
+	.badge { text-decoration: none; }
+	.badge:hover { color: var(--accent); border-color: var(--accent); }
+	@media (min-width: 40rem) { li { grid-template-columns: 8rem 1fr; } }
+</style>

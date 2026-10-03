@@ -1,0 +1,98 @@
+---
+import Base from '../../layouts/Base.astro';
+import SubNav from '../../components/SubNav.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import GigMeta from '../../components/GigMeta.astro';
+import {
+	upcomingGigs,
+	groupByMonth,
+	formatDate,
+	londonDay,
+	soonLabel,
+	ticketLabel,
+} from '../../lib/gigs';
+
+const gigs = await upcomingGigs();
+const months = groupByMonth(gigs);
+---
+
+<Base title="Gigs">
+	<h1 class="sr-only">Gigs</h1>
+	<SubNav />
+
+	{
+		gigs.length === 0 ? (
+			<p>Nothing lined up right now.</p>
+		) : (
+			<>
+				<div class="months">
+					{
+						months.map((m, i) => (
+							<section class="month">
+								<div class:list={{ first: i === 0 }}>
+									<SectionHead label={m.label} />
+								</div>
+								<ul class="gigs">
+									{m.gigs.map(({ data: g }) => {
+										const soon = soonLabel(g.date);
+										return (
+											<li class="gig">
+												<time class="when" datetime={londonDay(g.date)}>
+													<span class="wd mono">{formatDate(g.date, { weekday: 'short' })}</span>
+													<span class="dd">{formatDate(g.date, { day: 'numeric' })}</span>
+												</time>
+												<div class="main">
+													<h3>{g.artist}</h3>
+													<GigMeta venue={g.venue} postcode={g.postcode} time={g.time} price={g.price} />
+													{(soon || g.tags.length > 0) && (
+														<p class="tags">
+															{soon && <span class="badge soon">{soon}</span>}
+															{g.tags.map((t) => <span class="badge">{t}</span>)}
+														</p>
+													)}
+												</div>
+												{g.ticketUrl && (
+													<div class="actions">
+														<a class="btn primary" href={g.ticketUrl} rel="noopener">
+															{ticketLabel(g.ticketUrl)} <span aria-hidden="true">↗</span>
+														</a>
+													</div>
+												)}
+										</li>
+										);
+									})}
+								</ul>
+							</section>
+						))
+					}
+				</div>
+			</>
+		)
+	}
+</Base>
+
+<style>
+	.first :global(.section-head) { margin-top: 0; }
+	.months { max-width: 52rem; }
+	.gigs { list-style: none; margin: 0; padding: 0; }
+	.gig {
+		display: grid;
+		grid-template-columns: 3.5rem 1fr;
+		gap: 0.75rem 1rem;
+		padding: 1.1rem 0;
+		border-bottom: 1px solid var(--line);
+	}
+	.gig:last-child { border-bottom: 0; }
+	.when { display: flex; flex-direction: column; align-items: center; line-height: 1; padding-top: 0.2rem; }
+	.wd { color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.7rem; }
+	.dd { font-family: var(--font-display); font-weight: 800; font-size: 2rem; letter-spacing: -0.04em; margin-top: 0.2rem; }
+	h3 { margin: 0; font-size: 1.35rem; }
+	.tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.6rem 0 0; }
+	.badge.soon { border-color: var(--accent); color: var(--accent); }
+	.actions { grid-column: 2; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+	@media (min-width: 40rem) {
+		.gig { grid-template-columns: 4rem 1fr auto; align-items: center; }
+		.actions { grid-column: auto; justify-content: flex-end; }
+	}
+</style>

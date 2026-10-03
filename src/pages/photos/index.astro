@@ -1,0 +1,145 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import PhotoTile from '../../components/PhotoTile.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import { site } from '../../site.config';
+import { photos, favourites, groupByMonth, tagCounts } from '../../lib/photos';
+
+const months = groupByMonth(photos);
+const tags = tagCounts(photos);
+---
+
+<Base title="Photos">
+	<h1 class="sr-only">Photos</h1>
+
+	{
+		photos.length === 0 ? (
+			<p>
+				Photos are on <a href={site.flickr.profileUrl}>Flickr</a>.
+			</p>
+		) : (
+			<>
+				{
+					favourites.length > 0 && (
+						<>
+							<div class="first">
+								<SectionHead label="Favourites" />
+							</div>
+							<div class="favs">
+								{favourites.map((p) => <PhotoTile photo={p} gallery="fav" crop />)}
+							</div>
+						</>
+					)
+				}
+
+				<div class="filters" data-filters role="group" aria-label="Filter photos">
+					<div class="strip">
+						<button type="button" class="chip" data-group="month" data-value="" aria-pressed="true" hidden>All</button>
+						{
+							months.map((m) => (
+								<button type="button" class="chip" data-group="month" data-value={m.key} aria-pressed="false" hidden>
+									{m.label} <span class="n">{m.photos.length}</span>
+								</button>
+							))
+						}
+					</div>
+					{
+						tags.length > 0 && (
+							<div class="tags">
+								{tags.map((t) => (
+									<button type="button" class="chip" data-group="tag" data-value={t.tag} aria-pressed="false" hidden>
+										{t.tag} <span class="n">{t.count}</span>
+									</button>
+								))}
+							</div>
+						)
+					}
+				</div>
+
+				<div class="months">
+					{
+						months.map((m, i) => (
+							<section class="month" data-month-section={m.key}>
+								<div class:list={{ first: favourites.length === 0 && i === 0 }}>
+									<SectionHead label={m.label} />
+								</div>
+								<div class="masonry">
+									{m.photos.map((p) => <PhotoTile photo={p} gallery="all" />)}
+								</div>
+							</section>
+						))
+					}
+				</div>
+				<p class="none" hidden>No photos match.</p>
+				<Lightbox />
+			</>
+		)
+	}
+</Base>
+
+<script>
+	const bar = document.querySelector<HTMLElement>('[data-filters]');
+	if (bar) {
+		const chips = [...bar.querySelectorAll<HTMLButtonElement>('.chip')];
+		const photos = [...document.querySelectorAll<HTMLElement>('.masonry .ph')];
+		const sections = [...document.querySelectorAll<HTMLElement>('[data-month-section]')];
+		const none = document.querySelector<HTMLElement>('.none')!;
+
+		const state: { month?: string; tag?: string } = {};
+		const exists = (group: string, value: string | null) =>
+			!!value && chips.some((c) => c.dataset.group === group && c.dataset.value === value);
+
+		// Restore a shared link like /photos/?month=2025-02&tag=street
+		const params = new URLSearchParams(location.search);
+		if (exists('month', params.get('month'))) state.month = params.get('month')!;
+		if (exists('tag', params.get('tag'))) state.tag = params.get('tag')!;
+
+		const apply = () => {
+			photos.forEach((p) => {
+				const okMonth = !state.month || p.dataset.month === state.month;
+				const okTag = !state.tag || p.dataset.tags!.split('|').includes(state.tag);
+				p.hidden = !(okMonth && okTag);
+			});
+			sections.forEach((s) => (s.hidden = !s.querySelector('.ph:not([hidden])')));
+			none.hidden = photos.some((p) => !p.hidden);
+			chips.forEach((c) => {
+				const group = c.dataset.group as 'month' | 'tag';
+				c.setAttribute('aria-pressed', String((state[group] ?? '') === c.dataset.value));
+			});
+			const q = new URLSearchParams();
+			if (state.month) q.set('month', state.month);
+			if (state.tag) q.set('tag', state.tag);
+			history.replaceState(null, '', q.size ? `?${q}` : location.pathname);
+		};
+
+		chips.forEach((chip) => {
+			chip.hidden = false; // filters need JS, so only show them when it runs
+			chip.addEventListener('click', () => {
+				const group = chip.dataset.group as 'month' | 'tag';
+				const value = chip.dataset.value!;
+				state[group] = value === '' || state[group] === value ? undefined : value;
+				apply();
+			});
+		});
+		apply();
+	}
+</script>
+
+<style>
+	.first :global(.section-head) { margin-top: 0; }
+	.favs { display: grid; gap: 6px; grid-template-columns: repeat(2, 1fr); }
+	@media (min-width: 48rem) { .favs { grid-template-columns: repeat(3, 1fr); } }
+
+	.filters { display: grid; gap: 0.6rem; margin: 3rem 0 0; }
+	.strip, .tags { display: flex; gap: 0.5rem; }
+	.strip { overflow-x: auto; padding-bottom: 0.25rem; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scrollbar-width: thin; }
+	.tags { flex-wrap: wrap; }
+	.n { opacity: 0.6; margin-left: 0.25rem; }
+
+	.filters + .months :global(.section-head) { margin-top: 1.5rem; }
+	.masonry { columns: 2; column-gap: 6px; }
+	.masonry :global(.ph) { margin-bottom: 6px; break-inside: avoid; }
+	@media (min-width: 48rem) { .masonry { columns: 3; } }
+	.none { color: var(--muted); margin-top: 2rem; }
+</style>
