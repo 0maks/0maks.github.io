@@ -23,3 +23,10 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 src/data/broken-covers.json
+
+# Local project notes, assistant files and editor settings: kept on this machine, not published
+README.md
+PLAN.md
+AGENTS.md
+CLAUDE.md
+.vscode/
