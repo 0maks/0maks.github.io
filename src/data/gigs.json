@@ -41,6 +41,18 @@
 		"price": 23
 	},
 	{
+		"id": "sharkpit-2026-10-11",
+		"artist": "Sharkpit",
+		"date": "2026-10-11",
+		"venue": "Finsbury Park Picturehouse",
+		"postcode": "N4",
+		"ticketUrl": "https://link.dice.fm/s675cc7cc5f5",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/5Un7jFRDBnCVp17rXMB6x3"
+		},
+		"price": 8
+	},
+	{
 		"id": "camille-jansen-sharkpit-2026-10-26",
 		"artist": "Camille Jansen + Sharkpit",
 		"date": "2026-10-26",
@@ -53,6 +65,20 @@
 			"tidal": "https://tidal.com/artist/9187998"
 		},
 		"price": 20.02
+	},
+	{
+		"id": "shame-2026-11-02",
+		"artist": "Shame",
+		"date": "2026-11-02",
+		"venue": "EartH",
+		"postcode": "N16",
+		"tags": ["post-punk", "punk"],
+		"ticketUrl": "https://www.bandsintown.com/e/1040467030",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/4IeWU3NYBI9mISFVhzXG8f",
+			"tidal": "https://tidal.com/artist/8554178"
+		},
+		"price": 29.87
 	},
 	{
 		"id": "do-nothing-2026-11-06",
@@ -154,6 +180,19 @@
 		"price": 36
 	},
 	{
+		"id": "the-big-moon-mary-in-the-junkyard-2026-11-27",
+		"artist": "The Big Moon + Mary In The Junkyard",
+		"date": "2026-11-27",
+		"venue": "O2 Academy Brixton",
+		"postcode": "SW9",
+		"tags": ["indie rock"],
+		"ticketUrl": "https://www.seetickets.com/event/the-big-moon/o2-academy-brixton/3668442",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/48Kc3HRodbvm5ropMf9B6M"
+		},
+		"price": 37.35
+	},
+	{
 		"id": "headache-2026-12-02",
 		"artist": "Headache",
 		"date": "2026-12-02",
@@ -167,6 +206,19 @@
 			"tidal": "https://tidal.com/artist/3905628"
 		},
 		"price": 31
+	},
+	{
+		"id": "welly-2026-12-03",
+		"artist": "Welly",
+		"date": "2026-12-03",
+		"venue": "100 Club",
+		"postcode": "W1D",
+		"tags": ["indie", "art pop"],
+		"ticketUrl": "https://wegottickets.com/f/29682",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/65LFWKj4j7xul6eSIN4IOI"
+		},
+		"price": 18.7
 	},
 	{
 		"id": "getdown-services-2026-12-08",
@@ -195,5 +247,17 @@
 			"tidal": "https://tidal.com/artist/22274325"
 		},
 		"price": 28
+	},
+	{
+		"id": "greta-van-fleet-larkin-poe-2027-05-28",
+		"artist": "Greta Van Fleet + Larkin Poe",
+		"date": "2027-05-28",
+		"venue": "The O2",
+		"postcode": "SE10",
+		"tags": ["hard rock", "blues rock"],
+		"links": {
+			"spotify": "https://open.spotify.com/artist/4NpFxQe2UvRCAjto3JqlSl",
+			"tidal": "https://tidal.com/artist/7899267"
+		}
 	}
 ]
