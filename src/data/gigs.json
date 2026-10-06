@@ -53,19 +53,6 @@
 		"price": 8
 	},
 	{
-		"id": "fatboy-slim-2026-10-13",
-		"artist": "Fatboy Slim",
-		"date": "2026-10-13",
-		"venue": "Quarters",
-		"postcode": "BN1",
-		"tags": ["big beat", "dj set"],
-		"ticketUrl": "https://www.bandsintown.com/e/1040302824",
-		"links": {
-			"spotify": "https://open.spotify.com/artist/4Y7tXHSEejGu1vQ9bwDdXW",
-			"tidal": "https://tidal.com/artist/782"
-		}
-	},
-	{
 		"id": "camille-jansen-sharkpit-2026-10-26",
 		"artist": "Camille Jansen + Sharkpit",
 		"date": "2026-10-26",
