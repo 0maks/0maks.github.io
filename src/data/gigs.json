@@ -260,18 +260,5 @@
 			"spotify": "https://open.spotify.com/artist/4NpFxQe2UvRCAjto3JqlSl",
 			"tidal": "https://tidal.com/artist/7899267"
 		}
-	},
-	{
-		"id": "david-guetta-2027-06-05",
-		"artist": "David Guetta",
-		"date": "2027-06-05",
-		"venue": "The O2",
-		"postcode": "SE10",
-		"tags": ["edm", "house"],
-		"ticketUrl": "https://www.axs.com/uk/events/1633920/david-guetta-tickets",
-		"links": {
-			"spotify": "https://open.spotify.com/artist/1Cs0zKBU1kc0i8ypK3B9ai",
-			"tidal": "https://tidal.com/artist/27343"
-		}
 	}
 ]
