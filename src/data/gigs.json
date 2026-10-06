@@ -41,6 +41,18 @@
 		"price": 23
 	},
 	{
+		"id": "sharkpit-2026-10-11",
+		"artist": "Sharkpit",
+		"date": "2026-10-11",
+		"venue": "Finsbury Park Picturehouse",
+		"postcode": "N4",
+		"ticketUrl": "https://link.dice.fm/s675cc7cc5f5",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/5Un7jFRDBnCVp17rXMB6x3"
+		},
+		"price": 8
+	},
+	{
 		"id": "fatboy-slim-2026-10-13",
 		"artist": "Fatboy Slim",
 		"date": "2026-10-13",
