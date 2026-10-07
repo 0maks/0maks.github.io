@@ -1,0 +1,307 @@
+---
+import { Image } from 'astro:assets';
+import { getImage } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import { getRecipes, parseIngredients, methodHtml, formatTime, tagUrl } from '../../lib/recipes';
+import { usableImage } from '../../lib/images';
+import { textOn } from '../../lib/albums';
+import { formatAmount, resolveItem } from '../../lib/units';
+
+export async function getStaticPaths() {
+	const recipes = await getRecipes();
+	return recipes.map((recipe) => ({ params: { slug: recipe.id }, props: { recipe } }));
+}
+
+const { recipe } = Astro.props;
+const { title, description, time, servings, tags, macros, colour } = recipe.data;
+const photo = usableImage(recipe.data.photo);
+const preview = photo ? (await getImage({ src: photo, width: 1200, height: 900 })).src : undefined;
+const bg = colour ?? '#e1251b';
+
+const groups = parseIngredients(recipe.body ?? '', recipe.id);
+const method = methodHtml(recipe);
+const stats = macros
+	? [
+			{ label: 'Calories', value: macros.calories, unit: 'kcal' },
+			{ label: 'Protein', value: macros.protein, unit: 'g' },
+			{ label: 'Carbs', value: macros.carbs, unit: 'g' },
+			{ label: 'Fat', value: macros.fat, unit: 'g' },
+			...(macros.fibre !== undefined ? [{ label: 'Fibre', value: macros.fibre, unit: 'g' }] : []),
+		]
+	: [];
+---
+
+<Base title={title} description={description} image={preview} type="article">
+	<article data-recipe data-servings={servings}>
+		<header class="hero">
+			<div class="photo">
+				{
+					photo ? (
+						<Image src={photo} alt="" width={1000} height={750} loading="eager" />
+					) : (
+						<div class="blank" style={`--bg:${bg};--fg:${textOn(bg)}`} aria-hidden="true">{title.trim().charAt(0).toUpperCase()}</div>
+					)
+				}
+			</div>
+			<div class="info">
+				<p class="meta mono">{formatTime(time)} · makes {servings}</p>
+				<h1>{title}</h1>
+				<p class="desc">{description}</p>
+				{tags.length > 0 && <p class="tags">{tags.map((t) => <a class="badge" href={tagUrl(t)}>{t}</a>)}</p>}
+			</div>
+		</header>
+
+		<div class="layout">
+			<div class="side">
+				<div class="controls" data-controls hidden>
+					<div class="portions" role="group" aria-label="Portions">
+						<button type="button" data-less aria-label="Fewer portions">−</button>
+						<input type="text" inputmode="decimal" data-portions value={servings} aria-label="Number of portions" />
+						<button type="button" data-more aria-label="More portions">+</button>
+						<span class="mono">portions</span>
+					</div>
+					<div class="units" role="group" aria-label="Units">
+						<button type="button" data-system="metric" aria-pressed="true">Metric</button>
+						<button type="button" data-system="imperial" aria-pressed="false">Imperial</button>
+					</div>
+				</div>
+
+				{
+					groups.length > 0 && (
+						<>
+							<SectionHead label="Ingredients" />
+							{groups.map((g) => (
+								<>
+									{g.title && <h3 class="group">{g.title}</h3>}
+									<ul class="ingredients">
+										{g.items.map((i) =>
+											i.q === undefined ? (
+												<li class="ing">
+													<span class="item">{i.item}</span>
+												</li>
+											) : (
+												<li class="ing" data-q={i.q} data-q2={i.q2} data-u={i.unit} data-item={i.item} data-x={i.times ? '1' : undefined}>
+													<span class="amt mono">{formatAmount(i.q, i.unit, 'metric', 1, i.q2)}{i.times ? ' ×' : ''}</span>
+													<span class="what">
+														<span class="item">{resolveItem(i.item, i.q2 ?? i.q)}</span>
+														{i.note && <span class="note">, {i.note}</span>}
+													</span>
+												</li>
+											),
+										)}
+									</ul>
+								</>
+							))}
+						</>
+					)
+				}
+
+				{
+					stats.length > 0 && (
+						<>
+							<SectionHead label="Macros per portion" />
+							<dl class="macros">
+								{stats.map((s) => (
+									<div>
+										<dt class="mono">{s.label}</dt>
+										<dd>
+											{s.value}
+											<span class="mono">{s.unit}</span>
+										</dd>
+									</div>
+								))}
+							</dl>
+						</>
+					)
+				}
+			</div>
+
+			<div class="main">
+				<SectionHead label="Method" />
+				<div class="prose" set:html={method} />
+			</div>
+		</div>
+
+		<p class="back mono"><a href="/recipes/">← All recipes</a></p>
+	</article>
+</Base>
+
+<script>
+	import { formatAmount, resolveItem, scales, type System } from '../../lib/units';
+
+	const root = document.querySelector<HTMLElement>('[data-recipe]');
+	if (root) {
+		const base = Number(root.dataset.servings);
+		const controls = root.querySelector<HTMLElement>('[data-controls]')!;
+		const input = root.querySelector<HTMLInputElement>('[data-portions]')!;
+		const unitButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-system]')];
+		const ingredients = [...root.querySelectorAll<HTMLElement>('.ing[data-q]')];
+		const measurements = [...root.querySelectorAll<HTMLElement>('.meas')];
+
+		const KEY = 'recipe-units';
+		let system: System = 'metric';
+		try {
+			if (localStorage.getItem(KEY) === 'imperial') system = 'imperial';
+		} catch {
+			/* storage can be blocked; metric it is */
+		}
+		let portions = base;
+
+		const show = (n: number) => String(Number(n.toFixed(2)));
+
+		const render = () => {
+			const factor = portions / base;
+			for (const li of ingredients) {
+				const q = Number(li.dataset.q);
+				const q2 = li.dataset.q2 ? Number(li.dataset.q2) : undefined;
+				const unit = li.dataset.u || undefined;
+				li.querySelector('.amt')!.textContent = formatAmount(q, unit, system, factor, q2) + (li.dataset.x ? ' ×' : '');
+				const shownQty = (q2 ?? q) * (scales(unit) ? factor : 1);
+				li.querySelector('.item')!.textContent = resolveItem(li.dataset.item!, shownQty);
+			}
+			for (const el of measurements) {
+				el.textContent = formatAmount(Number(el.dataset.q), el.dataset.u, system, factor);
+			}
+			unitButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.system === system)));
+			if (document.activeElement !== input) input.value = show(portions);
+		};
+
+		const setPortions = (n: number) => {
+			if (!Number.isFinite(n) || n <= 0) return;
+			portions = Math.min(100, Math.max(0.5, n));
+			render();
+		};
+
+		root.querySelector('[data-less]')!.addEventListener('click', () => setPortions(portions > 1 ? portions - 1 : portions - 0.5));
+		root.querySelector('[data-more]')!.addEventListener('click', () => setPortions(portions < 1 ? portions + 0.5 : portions + 1));
+		input.addEventListener('input', () => {
+			const n = parseFloat(input.value.replace(',', '.'));
+			if (Number.isFinite(n) && n > 0) setPortions(n);
+		});
+		input.addEventListener('blur', () => (input.value = show(portions)));
+		unitButtons.forEach((b) =>
+			b.addEventListener('click', () => {
+				system = b.dataset.system as System;
+				try {
+					localStorage.setItem(KEY, system);
+				} catch {
+					/* not saved, still works for this visit */
+				}
+				render();
+			}),
+		);
+
+		controls.hidden = false; // needs JS, so only show it when it runs
+		render();
+	}
+</script>
+
+<style>
+	article { max-width: 64rem; }
+
+	.hero { display: grid; gap: 1.5rem; margin-bottom: 1rem; }
+	.photo { aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--radius); background: color-mix(in srgb, var(--fg) 8%, var(--bg)); }
+	.photo :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+	.blank { display: grid; place-items: center; width: 100%; height: 100%; background: var(--bg); color: var(--fg); font-family: var(--font-display); font-weight: 800; font-size: 9rem; letter-spacing: -0.04em; }
+	.meta { margin: 0 0 0.75rem; color: var(--muted); }
+	h1 { font-size: clamp(2rem, 7vw, 3.25rem); }
+	.desc { font-size: 1.15rem; color: var(--muted); max-width: 32rem; }
+	.tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 1rem 0 0; }
+	.badge { text-decoration: none; }
+	.badge:hover { color: var(--accent); border-color: var(--accent); }
+	@media (min-width: 48rem) {
+		.hero { grid-template-columns: minmax(16rem, 26rem) 1fr; gap: 3rem; align-items: center; }
+	}
+
+	.layout { display: grid; gap: 0; }
+	@media (min-width: 60rem) {
+		.layout { grid-template-columns: minmax(18rem, 22rem) 1fr; gap: 0 3.5rem; align-items: start; }
+		.side { position: sticky; top: 1.5rem; }
+	}
+	.side :global(.section-head), .main :global(.section-head) { margin-top: 2.5rem; }
+
+	.controls { display: grid; gap: 0.75rem; margin-top: 1.5rem; }
+	.controls[hidden] { display: none; }
+	.portions { display: flex; align-items: center; gap: 0.4rem; }
+	.portions .mono { color: var(--muted); margin-left: 0.4rem; }
+	.portions button {
+		display: grid;
+		place-items: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		border: 1px solid var(--line);
+		border-radius: 50%;
+		background: transparent;
+		color: var(--fg);
+		font-size: 1.25rem;
+		line-height: 1;
+		cursor: pointer;
+	}
+	.portions button:hover { border-color: var(--accent); color: var(--accent); }
+	.portions input {
+		width: 4rem;
+		height: 2.5rem;
+		padding: 0;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--fg);
+		font-family: var(--font-mono);
+		font-size: 1rem;
+		text-align: center;
+	}
+	.portions input:hover { border-color: var(--fg); }
+	.units { display: inline-flex; width: fit-content; border: 1px solid var(--line); border-radius: 999px; padding: 0.2rem; }
+	.units button {
+		min-height: 2rem;
+		padding: 0 0.95rem;
+		border: 0;
+		border-radius: 999px;
+		background: transparent;
+		color: var(--muted);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+		cursor: pointer;
+	}
+	.units button:hover { color: var(--fg); }
+	.units button[aria-pressed='true'] { background: var(--fg); color: var(--bg); }
+	button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+	.group { margin: 1.5rem 0 0.25rem; font-family: var(--font-mono); font-size: 0.8rem; font-weight: 500; letter-spacing: 0.04em; color: var(--muted); }
+	.ingredients { list-style: none; margin: 0; padding: 0; }
+	.ing { display: grid; grid-template-columns: 5.5rem 1fr; gap: 0.75rem; padding: 0.6rem 0; border-bottom: 1px solid var(--line); }
+	.ing:last-child { border-bottom: 0; }
+	.ing:not([data-q]) { grid-template-columns: 1fr; }
+	.amt { font-size: 0.85rem; padding-top: 0.15rem; font-weight: 500; }
+	.note { color: var(--muted); }
+
+	.macros { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem 1rem; margin: 0; }
+	.macros div { padding: 0.75rem 0; border-top: 1px solid var(--line); }
+	.macros dt { color: var(--muted); }
+	.macros dd { margin: 0.15rem 0 0; font-family: var(--font-display); font-weight: 800; font-size: 1.75rem; letter-spacing: -0.03em; line-height: 1.1; }
+	.macros dd span { margin-left: 0.25rem; font-size: 0.75rem; font-weight: 400; letter-spacing: 0; color: var(--muted); }
+
+	.main :global(.prose ol) { padding-left: 0; counter-reset: step; list-style: none; }
+	.main :global(.prose ol > li) { counter-increment: step; position: relative; padding-left: 2.5rem; margin: 0 0 1.1rem; }
+	.main :global(.prose ol > li::before) {
+		content: counter(step);
+		position: absolute;
+		left: 0;
+		top: 0.15em;
+		display: grid;
+		place-items: center;
+		width: 1.6rem;
+		height: 1.6rem;
+		border-radius: 50%;
+		border: 1px solid var(--line);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		color: var(--muted);
+	}
+
+	.back { margin-top: 3rem; }
+	.back a { text-decoration: none; }
+	.back a:hover { color: var(--accent); }
+</style>

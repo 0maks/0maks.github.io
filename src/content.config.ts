@@ -75,4 +75,39 @@ const blog = defineCollection({
 	}),
 });
 
-export const collections = { gigs, albums, blog };
+const recipes = defineCollection({
+	loader: glob({ pattern: '*.md', base: 'src/content/recipes' }),
+	schema: z.object({
+		title: z.string(),
+		// One sentence on the vibe
+		description: z.string(),
+		// Link to a photo. It is fetched and resized at build time.
+		photo: z.url().optional(),
+		// Hex colour for the placeholder shown when there is no photo. Defaults to the site accent.
+		colour: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/)
+			.optional(),
+		// Total cooking time in minutes
+		time: z.number().positive(),
+		// How many portions the quantities in the ingredients list make
+		servings: z.number().positive().default(2),
+		tags: z.array(z.string()).default([]),
+		// Per portion. Calories in kcal, the rest in grams.
+		macros: z
+			.object({
+				calories: z.number(),
+				protein: z.number(),
+				carbs: z.number(),
+				fat: z.number(),
+				fibre: z.number().optional(),
+			})
+			.optional(),
+		// Used for the "Newest" sort
+		date: z.coerce.date().optional(),
+		// Drafts show in `npm run dev` but never in the published site.
+		draft: z.boolean().default(false),
+	}),
+});
+
+export const collections = { gigs, albums, blog, recipes };

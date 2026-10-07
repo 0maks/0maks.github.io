@@ -9,6 +9,7 @@ export const site = {
 	nav: [
 		{ href: '/music/', label: 'Music' },
 		{ href: '/photos/', label: 'Photos' },
+		{ href: '/recipes/', label: 'Recipes' },
 		{ href: '/blog/', label: 'Blog' },
 	],
 } as const;
