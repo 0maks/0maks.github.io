@@ -1,5 +1,20 @@
 [
 	{
+		"id": "2026-10-05-lip-critic-theft-world",
+		"title": "Theft World",
+		"artist": "Lip Critic",
+		"weekOf": "2026-10-05",
+		"year": 2026,
+		"cover": "https://i.scdn.co/image/ab67616d0000b2732dd01abb077567509f00a39c",
+		"tags": [
+			"electronic punk"
+		],
+		"links": {
+			"spotify": "https://open.spotify.com/album/6UQvKJID9tTP81IIFRt9Dk",
+			"tidal": "https://tidal.com/album/473731142"
+		}
+	},
+	{
 		"id": "2026-09-28-fat-dog-cancel-me-im-tired",
 		"title": "Cancel Me (I'm Tired)",
 		"artist": "Fat Dog",
