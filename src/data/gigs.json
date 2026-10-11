@@ -53,6 +53,20 @@
 		"price": 8
 	},
 	{
+		"id": "lip-critic-2026-10-22",
+		"artist": "Lip Critic",
+		"date": "2026-10-22",
+		"venue": "The Underworld",
+		"postcode": "NW1",
+		"tags": ["punk", "electronic"],
+		"ticketUrl": "https://dice.fm/event/ryknqv-lip-critic-sold-out-22nd-oct-the-underworld-london-tickets",
+		"soldOut": true,
+		"links": {
+			"spotify": "https://open.spotify.com/artist/4ABuKdLlVyzLztIFR8ETX9",
+			"tidal": "https://tidal.com/artist/15394962"
+		}
+	},
+	{
 		"id": "camille-jansen-sharkpit-2026-10-26",
 		"artist": "Camille Jansen + Sharkpit",
 		"date": "2026-10-26",
@@ -79,6 +93,20 @@
 			"tidal": "https://tidal.com/artist/8554178"
 		},
 		"price": 29.87
+	},
+	{
+		"id": "rockie-rode-the-healing-power-of-horses-any-young-mechanic-2026-11-04",
+		"artist": "Rockie Rode + The Healing Power of Horses + Any Young Mechanic",
+		"date": "2026-11-04",
+		"venue": "MOTH Club",
+		"postcode": "E9",
+		"tags": ["indie", "dream pop"],
+		"ticketUrl": "https://dice.fm/event/yodyqv-rockie-rode-the-healing-power-of-horses-any-young-mechanic-4th-nov-moth-club-london-tickets",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/51qSyIFxFxgwZVU7zI90rE",
+			"tidal": "https://tidal.com/artist/19342198"
+		},
+		"price": 23.18
 	},
 	{
 		"id": "do-nothing-2026-11-06",
@@ -233,6 +261,21 @@
 			"tidal": "https://tidal.com/artist/22866295"
 		},
 		"price": 25
+	},
+	{
+		"id": "cowboy-hunters-2027-01-15",
+		"artist": "Cowboy Hunters",
+		"date": "2027-01-15",
+		"venue": "Blondies Brewery",
+		"postcode": "E10",
+		"tags": ["punk", "grime"],
+		"ticketUrl": "https://dice.fm/event/7d9d27-cowboy-hunters-bad-gravy-15th-jan-blondies-brewery-london-tickets",
+		"soldOut": true,
+		"links": {
+			"spotify": "https://open.spotify.com/artist/5GSSYBJxAbpSyj2w2vr5Cp",
+			"tidal": "https://tidal.com/artist/34120945"
+		},
+		"price": 15.55
 	},
 	{
 		"id": "lambrini-girls-2027-03-19",
