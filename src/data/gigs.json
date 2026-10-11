@@ -62,7 +62,8 @@
 		"ticketUrl": "https://dice.fm/event/ryknqv-lip-critic-sold-out-22nd-oct-the-underworld-london-tickets",
 		"soldOut": true,
 		"links": {
-			"spotify": "https://open.spotify.com/artist/4ABuKdLlVyzLztIFR8ETX9"
+			"spotify": "https://open.spotify.com/artist/4ABuKdLlVyzLztIFR8ETX9",
+			"tidal": "https://tidal.com/artist/15394962"
 		}
 	},
 	{
@@ -102,7 +103,8 @@
 		"tags": ["indie", "dream pop"],
 		"ticketUrl": "https://dice.fm/event/yodyqv-rockie-rode-the-healing-power-of-horses-any-young-mechanic-4th-nov-moth-club-london-tickets",
 		"links": {
-			"spotify": "https://open.spotify.com/artist/51qSyIFxFxgwZVU7zI90rE"
+			"spotify": "https://open.spotify.com/artist/51qSyIFxFxgwZVU7zI90rE",
+			"tidal": "https://tidal.com/artist/19342198"
 		},
 		"price": 23.18
 	},
@@ -268,9 +270,12 @@
 		"postcode": "E10",
 		"tags": ["punk", "grime"],
 		"ticketUrl": "https://dice.fm/event/7d9d27-cowboy-hunters-bad-gravy-15th-jan-blondies-brewery-london-tickets",
+		"soldOut": true,
 		"links": {
-			"spotify": "https://open.spotify.com/artist/5GSSYBJxAbpSyj2w2vr5Cp"
-		}
+			"spotify": "https://open.spotify.com/artist/5GSSYBJxAbpSyj2w2vr5Cp",
+			"tidal": "https://tidal.com/artist/34120945"
+		},
+		"price": 15.55
 	},
 	{
 		"id": "lambrini-girls-2027-03-19",
