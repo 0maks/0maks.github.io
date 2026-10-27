@@ -90,7 +90,8 @@
 		"ticketUrl": "https://www.windmillbrixton.co.uk/events/2026-10-27-welly-the-windmill",
 		"soldOut": true,
 		"links": {
-			"spotify": "https://open.spotify.com/artist/65LFWKj4j7xul6eSIN4IOI"
+			"spotify": "https://open.spotify.com/artist/65LFWKj4j7xul6eSIN4IOI",
+			"tidal": "https://tidal.com/artist/46567331"
 		}
 	},
 	{
@@ -114,7 +115,8 @@
 		"postcode": "N5",
 		"tags": ["psychedelic", "soul"],
 		"links": {
-			"spotify": "https://open.spotify.com/artist/1QVfnmiJuStWWhpLM0mt7F"
+			"spotify": "https://open.spotify.com/artist/1QVfnmiJuStWWhpLM0mt7F",
+			"tidal": "https://tidal.com/artist/10288298"
 		}
 	},
 	{
@@ -126,7 +128,8 @@
 		"tags": ["punk", "rap", "electronic"],
 		"ticketUrl": "https://dice.fm/event/g5q265-blackgold-30th-oct-the-underworld-london-tickets",
 		"links": {
-			"spotify": "https://open.spotify.com/artist/7F8CwvvwIi7GJvZ7qD2ybR"
+			"spotify": "https://open.spotify.com/artist/7F8CwvvwIi7GJvZ7qD2ybR",
+			"tidal": "https://tidal.com/artist/9862263"
 		},
 		"price": 21.56
 	},
@@ -349,7 +352,8 @@
 		"tags": ["shoegaze", "alternative rock"],
 		"ticketUrl": "https://www.ticketmaster.co.uk/event/360064FBDFF583E7",
 		"links": {
-			"spotify": "https://open.spotify.com/artist/0WPY9nnBy01s5QOt4o4oQX"
+			"spotify": "https://open.spotify.com/artist/4ps9FIxIQatbBhudrWSK3J",
+			"tidal": "https://tidal.com/artist/54628071"
 		},
 		"price": 44
 	},
@@ -376,7 +380,8 @@
 		"tags": ["electronic", "club", "pop"],
 		"ticketUrl": "https://www.ticketmaster.co.uk/shygirl-swallow-live-london-18-05-2027/event/1F006549DE085E64",
 		"links": {
-			"spotify": "https://open.spotify.com/artist/3M3wTTCDwicRubwMyHyEDy"
+			"spotify": "https://open.spotify.com/artist/3M3wTTCDwicRubwMyHyEDy",
+			"tidal": "https://tidal.com/artist/8485501"
 		}
 	},
 	{
