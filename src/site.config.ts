@@ -6,9 +6,12 @@ export const site = {
 	flickr,
 	// Controls whether posts, tag pages and the RSS feed are built. Drafts never are.
 	blog: { published: false },
+	// Controls whether recipe pages are built. Drafts never are. `npm run dev` shows everything.
+	recipes: { published: false },
 	nav: [
 		{ href: '/music/', label: 'Music' },
 		{ href: '/photos/', label: 'Photos' },
+		{ href: '/recipes/', label: 'Recipes' },
 		{ href: '/blog/', label: 'Blog' },
 	],
 } as const;

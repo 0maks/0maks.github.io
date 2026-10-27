@@ -1,0 +1,75 @@
+---
+import { Image } from 'astro:assets';
+import { formatTime, recipeUrl, tagUrl, type Recipe } from '../lib/recipes';
+import { usableImage } from '../lib/images';
+import { textOn } from '../lib/albums';
+
+interface Props {
+	recipe: Recipe;
+}
+
+const { recipe } = Astro.props;
+const { title, description, time, tags, macros, date, colour } = recipe.data;
+const photo = usableImage(recipe.data.photo);
+const bg = colour ?? '#e1251b';
+---
+
+<li
+	class="card"
+	data-title={title.toLowerCase()}
+	data-search={[title, ...tags].join(' ').toLowerCase()}
+	data-tags={tags.join('|')}
+	data-time={time}
+	data-calories={macros?.calories ?? ''}
+	data-protein={macros?.protein ?? ''}
+	data-date={date?.getTime() ?? 0}
+>
+	<div class="photo">
+		{
+			photo ? (
+				<Image src={photo} alt="" width={640} height={480} loading="lazy" decoding="async" />
+			) : (
+				<div class="blank" style={`--bg:${bg};--fg:${textOn(bg)}`} aria-hidden="true">{title.trim().charAt(0).toUpperCase()}</div>
+			)
+		}
+	</div>
+	<div class="body">
+		<p class="time mono">{formatTime(time)}</p>
+		<h3><a href={recipeUrl(recipe)}>{title}</a></h3>
+		<p class="desc">{description}</p>
+		{tags.length > 0 && <p class="tags">{tags.map((t) => <a class="badge" href={tagUrl(t)}>{t}</a>)}</p>}
+	</div>
+</li>
+
+<style>
+	.card { position: relative; display: flex; flex-direction: column; gap: 0.9rem; }
+	.card[hidden] { display: none; }
+	.photo { aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--radius); background: color-mix(in srgb, var(--fg) 8%, var(--bg)); }
+	.photo :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; transition: opacity 0.15s, transform 0.4s; }
+	.blank {
+		display: grid;
+		place-items: center;
+		width: 100%;
+		height: 100%;
+		background: var(--bg);
+		color: var(--fg);
+		font-family: var(--font-display);
+		font-weight: 800;
+		font-size: 5rem;
+		letter-spacing: -0.04em;
+	}
+	.card:hover .photo :global(img) { opacity: 0.9; transform: scale(1.02); }
+	.time { margin: 0 0 0.3rem; color: var(--muted); }
+	h3 { margin: 0; font-size: 1.3rem; }
+	/* The whole card is clickable through the title link; the tags sit above it. */
+	h3 a { text-decoration: none; }
+	h3 a::after { content: ''; position: absolute; inset: 0; }
+	h3 a:hover { color: var(--accent); }
+	.card:has(h3 a:focus-visible) .photo { outline: 2px solid var(--accent); outline-offset: 3px; }
+	h3 a:focus-visible { outline: none; }
+	.desc { margin: 0.4rem 0 0; color: var(--muted); }
+	.tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.7rem 0 0; position: relative; z-index: 1; }
+	.badge { text-decoration: none; }
+	.badge:hover { color: var(--accent); border-color: var(--accent); }
+	@media (prefers-reduced-motion: reduce) { .photo :global(img) { transition: none; } .card:hover .photo :global(img) { transform: none; } }
+</style>

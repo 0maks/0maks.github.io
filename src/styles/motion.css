@@ -1,0 +1,134 @@
+/* Motion layer. Everything here is decoration: it is skipped for prefers-reduced-motion
+   (the `js` class that arms the reveals is only set when motion is allowed). */
+
+/* Cross-document page transitions: a soft fade-and-lift between pages, no JS. */
+@media (prefers-reduced-motion: no-preference) {
+	@view-transition { navigation: auto; }
+	.site-header { view-transition-name: site-header; }
+	::view-transition-old(root) { animation: 0.18s ease-in both vt-out; }
+	::view-transition-new(root) { animation: 0.38s cubic-bezier(0.2, 0.7, 0.2, 1) both vt-in; }
+	::view-transition-group(site-header) { animation-duration: 0s; }
+}
+@keyframes vt-out { to { opacity: 0; transform: translateY(-6px); } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(14px); } }
+
+/* Scroll reveal. The script tags elements with data-reveal and adds .in as they enter view. */
+.js [data-reveal] {
+	opacity: 0;
+	transform: translateY(22px);
+	transition:
+		opacity 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms),
+		transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0ms);
+}
+.js [data-reveal='wipe'] {
+	opacity: 1;
+	transform: none;
+	clip-path: inset(0 98% 0 0);
+	transition: clip-path 0.9s cubic-bezier(0.65, 0, 0.2, 1) var(--d, 0ms);
+}
+.js [data-reveal='zoom'] { transform: scale(0.94); }
+.js [data-reveal].in { opacity: 1; transform: none; }
+.js [data-reveal='wipe'].in { clip-path: inset(0 0 0 0); }
+
+/* Scroll progress bar, driven by the scroll position (browsers with scroll-driven animations). */
+@supports (animation-timeline: scroll()) {
+	@media (prefers-reduced-motion: no-preference) {
+		body::before {
+			content: '';
+			position: fixed;
+			inset: 0 0 auto 0;
+			height: 3px;
+			z-index: 30;
+			background: var(--accent);
+			transform-origin: left;
+			transform: scaleX(0);
+			animation: progress linear both;
+			animation-timeline: scroll(root block);
+		}
+	}
+}
+@keyframes progress { to { transform: scaleX(1); } }
+
+/* Wordmark: the accent half carries a slow glint. */
+@media (prefers-reduced-motion: no-preference) {
+	@supports (background-clip: text) or (-webkit-background-clip: text) {
+		.wordmark span {
+			background: linear-gradient(100deg, var(--accent) 38%, color-mix(in srgb, var(--accent) 35%, #fff) 50%, var(--accent) 62%) 100% 0 / 260% 100% no-repeat;
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+			animation: glint 5.5s ease-in-out 1.2s infinite;
+		}
+	}
+	.wordmark { display: inline-block; transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1); }
+	.wordmark:hover { transform: skewX(-6deg) translateX(2px); }
+}
+@keyframes glint {
+	0%, 55% { background-position: 100% 0; }
+	85%, 100% { background-position: 0% 0; }
+}
+
+/* Nav: the underline slides in from the left on desktop. */
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (min-width: 40.01rem) {
+	.site-nav a {
+		background: linear-gradient(var(--accent), var(--accent)) left bottom / 0% 2px no-repeat;
+		transition: color 0.2s, background-size 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+	.site-nav a:hover { background-size: 100% 2px; }
+}
+
+/* Small interactions: colours ease, buttons press. */
+@media (prefers-reduced-motion: no-preference) {
+	a, .btn, .chip, .badge { transition: color 0.2s, border-color 0.2s, background-color 0.2s, transform 0.2s; }
+	.btn:active, .chip:active { transform: scale(0.96); }
+	.btn:hover, .chip:hover { transform: translateY(-1px); }
+}
+
+/* Pointer-tracked 3D tilt with a moving glare, used on album covers. */
+[data-tilt] { position: relative; }
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+	[data-tilt] {
+		--rx: 0deg;
+		--ry: 0deg;
+		--mx: 50%;
+		--my: 50%;
+		border-radius: var(--radius);
+		transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+		transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.6s;
+		will-change: transform;
+	}
+	[data-tilt]::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		pointer-events: none;
+		background: radial-gradient(circle at var(--mx) var(--my), rgb(255 255 255 / 0.35), transparent 55%);
+		opacity: 0;
+		transition: opacity 0.4s;
+	}
+	[data-tilt].tilting {
+		transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) scale(1.03);
+		transition: transform 0.08s linear, box-shadow 0.4s;
+		box-shadow: 0 1.5rem 3rem -1rem color-mix(in srgb, var(--accent) 45%, transparent), 0 0.5rem 1.5rem -0.5rem rgb(0 0 0 / 0.35);
+	}
+	[data-tilt].tilting::after { opacity: 1; }
+}
+
+/* Cursor glow: a soft accent haze that trails the pointer, behind the content. */
+.glow {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 36rem;
+	height: 36rem;
+	margin: -18rem 0 0 -18rem;
+	z-index: -1;
+	pointer-events: none;
+	border-radius: 50%;
+	background: radial-gradient(circle, color-mix(in srgb, var(--accent) 16%, transparent), transparent 62%);
+	opacity: 0;
+	transition: opacity 0.6s;
+	will-change: transform;
+}
+.glow.on { opacity: 1; }

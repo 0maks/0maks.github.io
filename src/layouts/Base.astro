@@ -44,6 +44,11 @@ const imageUrl = new URL(image, Astro.site);
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		{site.blog.published && <link rel="alternate" type="application/rss+xml" title={`${site.name} blog`} href="/blog/rss.xml" />}
 		<title>{pageTitle}</title>
+		<script is:inline>
+			if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+				document.documentElement.classList.add('js');
+			}
+		</script>
 	</head>
 	<body>
 		<header class="site-header">
@@ -69,5 +74,8 @@ const imageUrl = new URL(image, Astro.site);
 				<span>London</span>
 			</div>
 		</footer>
+		<script>
+			import '../scripts/motion';
+		</script>
 	</body>
 </html>

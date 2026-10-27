@@ -1,0 +1,212 @@
+---
+import Base from '../../layouts/Base.astro';
+import RecipeCard from '../../components/RecipeCard.astro';
+import { getRecipes } from '../../lib/recipes';
+
+const recipes = await getRecipes();
+
+const tagCounts = new Map<string, number>();
+for (const r of recipes) for (const t of r.data.tags) tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1);
+const tags = [...tagCounts].sort((a, b) => a[0].localeCompare(b[0]));
+---
+
+<Base title="Recipes" description="Things I cook, with the macros and a portion calculator.">
+	<h1 class="sr-only">Recipes</h1>
+
+	{
+		recipes.length === 0 ? (
+			<p>Coming soon.</p>
+		) : (
+			<>
+				<div class="filters" data-filters role="search" aria-label="Find a recipe" hidden>
+					<input type="search" placeholder="Search recipes or tags" aria-label="Search recipes by name or tag" autocomplete="off" />
+					{tags.length > 1 && (
+						<label class="select">
+							<span class="sr-only">Tag</span>
+							<select data-tag>
+								<option value="">All tags</option>
+								{tags.map(([tag, count]) => <option value={tag}>{tag} ({count})</option>)}
+							</select>
+						</label>
+					)}
+					<label class="select">
+						<span class="sr-only">Sort by</span>
+						<select data-sort>
+							<option value="new">Newest</option>
+							<option value="name">Name (A–Z)</option>
+							<option value="time">Quickest</option>
+							<option value="protein">Most protein</option>
+							<option value="calories">Fewest calories</option>
+						</select>
+					</label>
+					<button type="button" class="clear" data-clear hidden>Clear</button>
+					<p class="count mono" data-count aria-live="polite">{recipes.length} {recipes.length === 1 ? 'recipe' : 'recipes'}</p>
+				</div>
+
+				<ul class="grid" data-grid>
+					{recipes.map((r) => <RecipeCard recipe={r} />)}
+				</ul>
+				<p class="none" data-none hidden>No recipes match.</p>
+			</>
+		)
+	}
+</Base>
+
+<script>
+	const bar = document.querySelector<HTMLElement>('[data-filters]');
+	const grid = document.querySelector<HTMLElement>('[data-grid]');
+	if (bar && grid) {
+		const search = bar.querySelector<HTMLInputElement>('input[type="search"]')!;
+		const tagSelect = bar.querySelector<HTMLSelectElement>('select[data-tag]');
+		const sortSelect = bar.querySelector<HTMLSelectElement>('select[data-sort]')!;
+		const clear = bar.querySelector<HTMLButtonElement>('[data-clear]')!;
+		const count = bar.querySelector<HTMLElement>('[data-count]')!;
+		const none = document.querySelector<HTMLElement>('[data-none]')!;
+		const cards = [...grid.querySelectorAll<HTMLElement>('.card')];
+		const total = cards.length;
+
+		const num = (el: HTMLElement, key: string, missing: number) => (el.dataset[key] === '' ? missing : Number(el.dataset[key]));
+		const byName = (a: HTMLElement, b: HTMLElement) => a.dataset.title!.localeCompare(b.dataset.title!);
+		const sorters: Record<string, (a: HTMLElement, b: HTMLElement) => number> = {
+			new: (a, b) => num(b, 'date', 0) - num(a, 'date', 0) || byName(a, b),
+			name: byName,
+			time: (a, b) => num(a, 'time', Infinity) - num(b, 'time', Infinity) || byName(a, b),
+			protein: (a, b) => num(b, 'protein', -1) - num(a, 'protein', -1) || byName(a, b), // recipes without macros go last
+			calories: (a, b) => num(a, 'calories', Infinity) - num(b, 'calories', Infinity) || byName(a, b),
+		};
+
+		const apply = () => {
+			const words = search.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+			const tag = tagSelect?.value ?? '';
+			let shown = 0;
+			for (const card of cards) {
+				const ok = words.every((w) => card.dataset.search!.includes(w)) && (!tag || card.dataset.tags!.split('|').includes(tag));
+				card.hidden = !ok;
+				if (ok) shown++;
+			}
+			// Reorder in place; hidden cards keep their relative order.
+			[...cards].sort(sorters[sortSelect.value] ?? sorters.new).forEach((c) => grid.append(c));
+
+			none.hidden = shown > 0;
+			count.textContent = `${shown === total ? '' : `${shown} of `}${total} ${total === 1 ? 'recipe' : 'recipes'}`;
+			tagSelect?.classList.toggle('on', tag !== '');
+			clear.hidden = words.length === 0 && !tag;
+
+			// Keep the address in step so a view can be shared.
+			const params = new URLSearchParams();
+			if (words.length) params.set('q', search.value.trim());
+			if (tag) params.set('tag', tag);
+			if (sortSelect.value !== 'new') params.set('sort', sortSelect.value);
+			history.replaceState(null, '', params.size ? `?${params}` : location.pathname);
+		};
+
+		// Restore a shared link like /recipes/?tag=vegan&sort=time (tag links on the cards use this too).
+		const params = new URLSearchParams(location.search);
+		search.value = params.get('q') ?? '';
+		const wantedTag = params.get('tag');
+		if (tagSelect && wantedTag && [...tagSelect.options].some((o) => o.value === wantedTag)) tagSelect.value = wantedTag;
+		const wantedSort = params.get('sort');
+		if (wantedSort && wantedSort in sorters) sortSelect.value = wantedSort;
+
+		search.addEventListener('input', apply);
+		tagSelect?.addEventListener('change', apply);
+		sortSelect.addEventListener('change', apply);
+		clear.addEventListener('click', () => {
+			search.value = '';
+			if (tagSelect) tagSelect.value = '';
+			apply();
+			search.focus();
+		});
+
+		bar.hidden = false; // filters need JS, so only show them when it runs
+		apply();
+	}
+</script>
+
+<style>
+	.filters {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem;
+		margin-bottom: 2rem;
+	}
+	.filters[hidden] { display: none; }
+	input[type='search'] {
+		flex: 1 1 100%;
+		min-height: 2.25rem;
+		padding: 0 0.9rem;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--fg);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+		-webkit-appearance: none;
+		appearance: none;
+	}
+	input[type='search']::placeholder { color: var(--muted); }
+	input[type='search']:hover { border-color: var(--fg); }
+	input[type='search']:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+	.select { position: relative; flex: 1 1 calc(50% - 0.5rem); }
+	.select::after {
+		content: '';
+		position: absolute;
+		right: 0.95rem;
+		top: 50%;
+		width: 0.4rem;
+		height: 0.4rem;
+		border-right: 1.5px solid var(--muted);
+		border-bottom: 1.5px solid var(--muted);
+		transform: translateY(-70%) rotate(45deg);
+		pointer-events: none;
+	}
+	select {
+		width: 100%;
+		min-height: 2.25rem;
+		padding: 0 2.1rem 0 0.9rem;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--muted);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+		cursor: pointer;
+		text-overflow: ellipsis;
+		-webkit-appearance: none;
+		appearance: none;
+	}
+	select:hover { color: var(--fg); border-color: var(--fg); }
+	select.on { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+	.select:has(select.on)::after { border-color: var(--bg); }
+	option { background: var(--bg); color: var(--fg); }
+
+	.clear {
+		min-height: 2.25rem;
+		padding: 0 0.5rem;
+		border: 0;
+		background: none;
+		color: var(--accent);
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		text-decoration: underline;
+		text-underline-offset: 0.25em;
+		cursor: pointer;
+	}
+	.clear[hidden] { display: none; }
+	.count { margin: 0 0 0 auto; color: var(--muted); }
+	.none { color: var(--muted); }
+
+	@media (min-width: 40rem) {
+		input[type='search'] { flex: 1 1 16rem; }
+		.select { flex: 0 1 auto; }
+		select { width: auto; max-width: 14rem; }
+	}
+
+	.grid { list-style: none; margin: 0; padding: 0; display: grid; gap: 2.25rem 1.25rem; grid-template-columns: 1fr; }
+	@media (min-width: 36rem) { .grid { grid-template-columns: repeat(2, 1fr); } }
+	@media (min-width: 60rem) { .grid { grid-template-columns: repeat(3, 1fr); } }
+</style>

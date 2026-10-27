@@ -21,7 +21,7 @@ const [latest] = await getAlbums();
 	{
 		latest ? (
 			<article class="album">
-				<a class="cover" href={albumUrl(latest)} tabindex="-1" aria-hidden="true">
+				<a class="cover" data-tilt href={albumUrl(latest)} tabindex="-1" aria-hidden="true">
 					<Cover album={latest} size={720} eager />
 				</a>
 				<div>
@@ -88,7 +88,8 @@ const [latest] = await getAlbums();
 
 	.favs { display: grid; gap: 6px; grid-template-columns: repeat(2, 1fr); }
 	.tile { display: block; overflow: hidden; border-radius: var(--radius); background: color-mix(in srgb, var(--fg) 8%, var(--bg)); }
-	.tile img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; transition: opacity 0.15s; }
-	.tile:hover img { opacity: 0.88; }
+	.tile img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; transition: opacity 0.15s, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+	.tile:hover img { opacity: 0.92; transform: scale(1.06); }
+	@media (prefers-reduced-motion: reduce) { .tile img { transition: none; } .tile:hover img { transform: none; } }
 	@media (min-width: 40rem) { .favs { grid-template-columns: repeat(3, 1fr); } }
 </style>
