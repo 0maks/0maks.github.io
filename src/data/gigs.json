@@ -116,6 +116,7 @@
 		"venue": "The Garage",
 		"postcode": "N5",
 		"tags": ["psychedelic", "soul"],
+		"ticketUrl": "https://dice.fm/event/7dm5y6-the-milk-30th-oct-the-garage-london-london-tickets",
 		"links": {
 			"spotify": "https://open.spotify.com/artist/1QVfnmiJuStWWhpLM0mt7F",
 			"tidal": "https://tidal.com/artist/10288298"
@@ -344,20 +345,6 @@
 			"tidal": "https://tidal.com/artist/34120945"
 		},
 		"price": 15.55
-	},
-	{
-		"id": "ride-the-healing-power-of-horses-2027-02-13",
-		"artist": "Ride + The Healing Power of Horses",
-		"date": "2027-02-13",
-		"venue": "O2 Academy Brixton",
-		"postcode": "SW9",
-		"tags": ["shoegaze", "alternative rock"],
-		"ticketUrl": "https://www.ticketmaster.co.uk/event/360064FBDFF583E7",
-		"links": {
-			"spotify": "https://open.spotify.com/artist/4ps9FIxIQatbBhudrWSK3J",
-			"tidal": "https://tidal.com/artist/54628071"
-		},
-		"price": 44
 	},
 	{
 		"id": "lambrini-girls-2027-03-19",
