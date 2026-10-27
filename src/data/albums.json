@@ -1,5 +1,35 @@
 [
 	{
+		"id": "2026-10-19-caroline-rose-gentling-the-horse-at-the-walt-whitman-mall",
+		"title": "Gentling the Horse at the Walt Whitman Mall",
+		"artist": "Caroline Rose",
+		"weekOf": "2026-10-19",
+		"year": 2026,
+		"cover": "https://media.pitchfork.com/photos/6ad9138a99efacf8991d37c0/1:1/w_640%2Cc_limit/undefined",
+		"tags": [
+			"indie rock"
+		],
+		"links": {
+			"spotify": "https://open.spotify.com/album/5vTXXPuNbjStVeQP2jkfGG",
+			"tidal": "https://tidal.com/album/539589896"
+		}
+	},
+	{
+		"id": "2026-10-12-they-are-gutting-a-body-of-water-kool-faith-loosies-ii",
+		"title": "Kool Faith / Loosies II",
+		"artist": "They Are Gutting a Body of Water",
+		"weekOf": "2026-10-12",
+		"year": 2026,
+		"cover": "https://media.pitchfork.com/photos/6ab3e168ad1203b50827a447/1:1/w_450%2Cc_limit/They%2520Are%2520Gutting%2520a%2520Body%2520of%2520Water%2520Kool%2520Faith%2520Loosies%2520II.png",
+		"tags": [
+			"shoegaze"
+		],
+		"links": {
+			"spotify": "https://open.spotify.com/album/1BYliQLIbtADojb9uv37qB",
+			"tidal": "https://tidal.com/album/560131090"
+		}
+	},
+	{
 		"id": "2026-10-05-lip-critic-theft-world",
 		"title": "Theft World",
 		"artist": "Lip Critic",
