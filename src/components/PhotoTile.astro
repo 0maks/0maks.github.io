@@ -41,9 +41,9 @@ const title = photo.title || 'Untitled';
 
 <style>
 	.ph { display: block; overflow: hidden; border-radius: var(--radius); background: color-mix(in srgb, var(--fg) 8%, var(--bg)); }
-	img { display: block; width: 100%; height: auto; transition: opacity 0.15s; }
+	img { display: block; width: 100%; height: auto; transition: opacity 0.15s, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
 	.crop img { aspect-ratio: 3 / 2; object-fit: cover; }
-	.ph:hover img { opacity: 0.88; }
+	.ph:hover img { opacity: 0.92; transform: scale(1.06); }
 	.ph:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-	@media (prefers-reduced-motion: reduce) { img { transition: none; } }
+	@media (prefers-reduced-motion: reduce) { img { transition: none; } .ph:hover img { transform: none; } }
 </style>

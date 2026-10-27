@@ -31,7 +31,9 @@ const { posts } = Astro.props;
 	li { display: grid; gap: 0.25rem 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid var(--line); }
 	li:last-child { border-bottom: 0; }
 	.date { color: var(--muted); }
-	h2 { margin: 0; font-size: 1.5rem; }
+	h2 { margin: 0; font-size: 1.5rem; transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }
+	li:hover h2 { transform: translateX(8px); }
+	@media (prefers-reduced-motion: reduce) { h2 { transition: none; } li:hover h2 { transform: none; } }
 	h2 a { text-decoration: none; }
 	h2 a:hover { color: var(--accent); }
 	.summary { margin: 0.35rem 0 0; color: var(--muted); }

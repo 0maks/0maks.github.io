@@ -24,7 +24,7 @@ const preview = cover ? (await getImage({ src: cover, width: 1200, height: 1200 
 <Base title={`${title} · ${artist}`} description={`${title} by ${artist}, album of the week.`} image={preview}>
 	<SubNav />
 	<article class="album">
-		<div class="art"><Cover album={album} size={1000} eager /></div>
+		<div class="art" data-tilt><Cover album={album} size={1000} eager /></div>
 		<div class="info">
 			<p class="mono meta">
 				Week of {formatWeek(weekOf)}

@@ -2,6 +2,7 @@
 @import '@fontsource-variable/inter';
 @import '@fontsource/jetbrains-mono/400.css';
 @import '@fontsource/jetbrains-mono/500.css';
+@import './motion.css';
 
 /* Design tokens. Light by default, dark follows the OS. */
 :root {

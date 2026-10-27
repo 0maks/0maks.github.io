@@ -60,7 +60,9 @@ const months = monthColumns(Astro.props.albums)
 	li { aspect-ratio: 1; }
 	.empty { border-radius: var(--radius); background: color-mix(in srgb, var(--fg) 6%, var(--bg)); }
 	.tile { position: relative; display: block; text-decoration: none; width: 100%; height: 100%; border-radius: var(--radius); overflow: hidden; }
-	.tile :global(img), .tile :global(.cover-gen) { width: 100%; height: 100%; }
+	.tile :global(img), .tile :global(.cover-gen) { width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+	.tile:hover :global(img), .tile:hover :global(.cover-gen) { transform: scale(1.08); }
+	@media (prefers-reduced-motion: reduce) { .tile:hover :global(img), .tile:hover :global(.cover-gen) { transform: none; } }
 
 	/* Wider screens: a month is one row of up to five weeks, label on the left. */
 	@media (min-width: 40rem) {
