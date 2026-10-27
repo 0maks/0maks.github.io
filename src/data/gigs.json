@@ -101,6 +101,8 @@
 		"venue": "Rough Trade East",
 		"postcode": "E1",
 		"tags": ["indie rock", "indie pop"],
+		"ticketUrl": "https://dice.fm/event/53m8kd-caroline-rose-live-signing-28th-oct-rough-trade-east-london-london-tickets",
+		"soldOut": true,
 		"links": {
 			"spotify": "https://open.spotify.com/artist/06W84OT2eFUNVwG85UsxJw",
 			"tidal": "https://tidal.com/artist/4979309"
