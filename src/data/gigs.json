@@ -81,6 +81,56 @@
 		"price": 20.02
 	},
 	{
+		"id": "welly-2026-10-27",
+		"artist": "Welly",
+		"date": "2026-10-27",
+		"venue": "The Windmill",
+		"postcode": "SW2",
+		"tags": ["art pop", "indie"],
+		"ticketUrl": "https://www.windmillbrixton.co.uk/events/2026-10-27-welly-the-windmill",
+		"soldOut": true,
+		"links": {
+			"spotify": "https://open.spotify.com/artist/65LFWKj4j7xul6eSIN4IOI"
+		}
+	},
+	{
+		"id": "caroline-rose-2026-10-28",
+		"artist": "Caroline Rose",
+		"date": "2026-10-28",
+		"venue": "Rough Trade East",
+		"postcode": "E1",
+		"tags": ["indie rock", "indie pop"],
+		"links": {
+			"spotify": "https://open.spotify.com/artist/06W84OT2eFUNVwG85UsxJw",
+			"tidal": "https://tidal.com/artist/4979309"
+		},
+		"price": 16.89
+	},
+	{
+		"id": "beach-for-tiger-2026-10-30",
+		"artist": "Beach For Tiger",
+		"date": "2026-10-30",
+		"venue": "The Garage",
+		"postcode": "N5",
+		"tags": ["psychedelic", "soul"],
+		"links": {
+			"spotify": "https://open.spotify.com/artist/1QVfnmiJuStWWhpLM0mt7F"
+		}
+	},
+	{
+		"id": "pengshui-2026-10-30",
+		"artist": "PENGSHUi",
+		"date": "2026-10-30",
+		"venue": "The Underworld",
+		"postcode": "NW1",
+		"tags": ["punk", "rap", "electronic"],
+		"ticketUrl": "https://dice.fm/event/g5q265-blackgold-30th-oct-the-underworld-london-tickets",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/7F8CwvvwIi7GJvZ7qD2ybR"
+		},
+		"price": 21.56
+	},
+	{
 		"id": "shame-2026-11-02",
 		"artist": "Shame",
 		"date": "2026-11-02",
@@ -122,6 +172,19 @@
 			"tidal": "https://tidal.com/artist/9467988"
 		},
 		"price": 18
+	},
+	{
+		"id": "bassvictim-2026-11-06",
+		"artist": "Bassvictim",
+		"date": "2026-11-06",
+		"venue": "Troxy",
+		"postcode": "E1",
+		"tags": ["electronic", "dance"],
+		"ticketUrl": "https://dice.fm/event/oe8k9r-bassvictim-and-friends-6th-nov-troxy-london-tickets",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/7f8ydynRRnrJBqWxevKLcM",
+			"tidal": "https://tidal.com/artist/44630513"
+		}
 	},
 	{
 		"id": "thaiboy-digital-2026-11-07",
@@ -278,6 +341,19 @@
 		"price": 15.55
 	},
 	{
+		"id": "ride-the-healing-power-of-horses-2027-02-13",
+		"artist": "Ride + The Healing Power of Horses",
+		"date": "2027-02-13",
+		"venue": "O2 Academy Brixton",
+		"postcode": "SW9",
+		"tags": ["shoegaze", "alternative rock"],
+		"ticketUrl": "https://www.ticketmaster.co.uk/event/360064FBDFF583E7",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/0WPY9nnBy01s5QOt4o4oQX"
+		},
+		"price": 44
+	},
+	{
 		"id": "lambrini-girls-2027-03-19",
 		"artist": "Lambrini Girls",
 		"date": "2027-03-19",
@@ -290,6 +366,18 @@
 			"tidal": "https://tidal.com/artist/22274325"
 		},
 		"price": 28
+	},
+	{
+		"id": "shygirl-2027-05-18",
+		"artist": "Shygirl",
+		"date": "2027-05-18",
+		"venue": "Royal Albert Hall",
+		"postcode": "SW7",
+		"tags": ["electronic", "club", "pop"],
+		"ticketUrl": "https://www.ticketmaster.co.uk/shygirl-swallow-live-london-18-05-2027/event/1F006549DE085E64",
+		"links": {
+			"spotify": "https://open.spotify.com/artist/3M3wTTCDwicRubwMyHyEDy"
+		}
 	},
 	{
 		"id": "greta-van-fleet-larkin-poe-2027-05-28",
