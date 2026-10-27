@@ -1,15 +1,17 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { site } from '../site.config';
 import { markMeasurements, parseIngredient, type Ingredient } from './units';
 
 export type Recipe = CollectionEntry<'recipes'>;
 
 /**
  * Recipes that should appear on the site, newest first.
- * `npm run dev` also shows drafts so you can write and preview; the published site never does.
+ * Nothing shows, in dev or in a build, until `site.recipes.published` is true.
+ * Once it is, `npm run dev` also shows drafts so you can write and preview; the published site never does.
  */
 export async function getRecipes() {
 	const all = await getCollection('recipes');
-	const visible = import.meta.env.DEV ? all : all.filter((r) => !r.data.draft);
+	const visible = !site.recipes.published ? [] : import.meta.env.DEV ? all : all.filter((r) => !r.data.draft);
 	return visible.sort(
 		(a, b) => (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0) || a.data.title.localeCompare(b.data.title),
 	);
